@@ -18,4 +18,18 @@
 <link rel="stylesheet" href="{{url('plugins/daterangepicker/daterangepicker.css')}}">
 <!-- summernote -->
 <link rel="stylesheet" href="{{url('plugins/summernote/summernote-bs4.min.css')}}">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+<style>
+    .required::after {
+        font-family: "Font Awesome 5 Free";
+        content: "\f06a";
+        color: #dc3545;
+        font-size: 0.75rem;
+        padding-left: 2px;
+        border-radius: 50%;
+        display: inline-block;
+        position: absolute;
+    }
+</style>

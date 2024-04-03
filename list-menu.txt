@@ -1,0 +1,28 @@
+* Dahsboard
+- Penjualan
+* Kasir
+* Transaksi
+* Pelanggan
+- Pembelian
+* Supplier
+* Rencana
+* Pesanan
+- Persediaan
+* Stock Masuk
+* Stock Keluar
+* Stock Opname
+- Master
+* Produk
+  - Kategori
+  - Satuan
+  - Data
+* Gudang
+  - Rak
+  - Data
+* Pengguna
+  - Shift
+  - Log Shift
+- Laporan
+* Penjualan
+* Pembelian
+* Persediaan

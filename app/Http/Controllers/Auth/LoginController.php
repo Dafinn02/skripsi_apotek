@@ -41,34 +41,37 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
     public function loginUser(Request $request)
     {
-        $user = DB::table('users')->where('username',$request->username)->first();
-        $arr = [];
-        if($user)
-        {
-            if (!Hash::check($request->password, $user->password))
-            {
-                return redirect()->back()->with('error','Mohon maaf password yang anda masukkan salah, mohon cek kembali!');
-            }
-            $user = User::find($user->id);
-            Auth::login($user);
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required'
+        ]);
 
-            //menu
-            $resultMenu = Menu::getMenuBaseOnrole($user);
-            //dd($resultMenu);
-            //dd($request->path());
-            $role = DB::table('roles')->where('id',$user->role_id)->first();
-            Session::put('roleUser',$role->name);
-            Session::put('resultMenu',$resultMenu['menu']);
-            Session::put('resultPath',$resultMenu['path']);
-            Session::put('resultPathOne',$resultMenu['path_one']);
-            //dd($role);
-            return redirect($role->route);
+        if(Auth::attempt([
+            'username' => $request->username,
+            'password' => $request->password
+        ])){
+            $request->session()->regenerate();
+            return redirect('dashboard');
         }
-        return redirect()->back()->with('error','Mohon maaf username anda tidak ditemukan, mohon cek kembali!');
+
+        return back()->withErrors([
+            'username' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

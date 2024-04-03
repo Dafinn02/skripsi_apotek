@@ -19,24 +19,18 @@
 
       <li class="nav-item">
         <a class="nav-link" role="button">
-          <b>{{Session::get('roleUser')}}</b> &nbsp;
+          <b>{{Auth::user()->name}}</b> &nbsp;
           <i class="fas fa-user"></i>
         </a>
       </li>
-      {{-- <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <b id="tulisan-layar">Layar Penuh</b> &nbsp;
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li> --}}
       <li class="nav-item">
         <a class="nav-link" data-controlsidebar-slide="true" style="cursor: pointer;color: black;" 
-         href="{{ route('logout') }}"
+         href="{{ url('/logout') }}"
          onclick="event.preventDefault(); document.getElementById('logout-form').submit();" role="button">
           <b>Keluar</b> &nbsp;
           <i class="fas fa-sign-out-alt"></i>
         </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        <form id="logout-form" action="{{url('/logout')}}" method="GET" class="d-none">
         @csrf
       </form>
       </li>
