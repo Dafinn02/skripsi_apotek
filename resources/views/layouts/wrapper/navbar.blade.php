@@ -16,13 +16,16 @@
       <!-- Messages Dropdown Menu -->
 
       <!-- Notifications Dropdown Menu -->
-
+     
       <li class="nav-item">
         <a class="nav-link" role="button">
-          <b>{{Auth::user()->name}}</b> &nbsp;
-          <i class="fas fa-user"></i>
+          <b id="clock" style="color: black">
+           
+          </b> &nbsp;
+          <i class="fas fa-clock"></i>
         </a>
       </li>
+      @if($role != 'cashier')
       <li class="nav-item">
         <a class="nav-link" data-controlsidebar-slide="true" style="cursor: pointer;color: black;" 
          href="{{ url('/logout') }}"
@@ -34,6 +37,7 @@
         @csrf
       </form>
       </li>
+      @endif
     </ul>
   </nav>
   <!-- /.navbar -->

@@ -145,7 +145,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer" align="right">
-                  <a style="color: white" href="{{url('master/product')}}" class="btn btn-warning">Batal</a>
+                  <a style="color: white" href="{{url('master/produk')}}" class="btn btn-warning">Batal</a>
                   <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
                 </div>

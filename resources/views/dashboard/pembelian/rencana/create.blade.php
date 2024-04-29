@@ -4,6 +4,18 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="{{url('plugins/select2/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{url('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+<style type="text/css">
+  /* CSS */
+.product-header {
+    /*display: flex;
+    justify-content: space-between;  Letakkan judul di kiri dan tombol di kanan 
+    align-items: center;      */     /* Vertically align elements */
+}
+
+/*.btn-remove {
+    margin-left: auto;  Posisikan tombol di sebelah kanan 
+}*/
+</style>
 @endsection
 
 @section('custom-js')
@@ -15,6 +27,90 @@
       theme: 'bootstrap4'
     })
   });
+</script>
+
+<script>
+  // JavaScript
+  var productCount = 1;
+
+  function removeProductOne(id)
+  {
+    $('#'+id).remove();
+    productCount--;
+  }
+  function addProductOne()
+  {
+    productCount++;
+    var item = `<div class="product" id="product-item-`+productCount+`">
+                        <hr>
+                        <div class="product-header" align="center">
+                          <button type="button" class="btn btn-sm btn-danger" 
+                          onclick="removeProductOne('product-item-`+productCount+`')">
+                            &nbsp; <i class="fa fa-trash"></i> Hapus Produk
+                          </button>
+                        </div>
+                        <hr>
+                        <div class="mt-3">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="supplier_id">Supplier</label>
+                                  <select name="supplier_id[]" id="supplier" class="form-control">
+                                      <option selected disabled>Pilih Supplier</option>
+                                      @foreach($suppliers as $supplier)
+                                      <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="supplier_pic[]">Pic Supplier</label>
+                                <input type="text" id="supplier_pic" name="supplier_pic[]" class="form-control" required>
+                              </div>    
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="qty">Kuantitas</label>
+                                  <input type="number" name="qty[]" class="form-control" required>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="product_id">Produk</label>
+                                  <select name="product_id[]" class="form-control">
+                                      <option selected disabled>Pilih Produk</option>
+                                      @foreach($product as $produk)
+                                      <option value="{{ $produk->id }}">{{ $produk->name }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="unit_id">Unit</label>
+                                  <select name="unit_id[]" class="form-control">
+                                      <option selected disabled>Pilih Unit</option>
+                                      @foreach($units as $unit)
+                                      <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="unit_id">Harga Satuan</label>
+                                  <input type="number" name="price[]" class="form-control" required>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                </div>`;
+    $('#products').append(item);
+  }
 </script>
 @endsection
 
@@ -68,7 +164,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="payment_due_date">Jatuh Tempo Pembayaran</label>
-                                <input type="date" class="form-control">
+                                <input type="date" class="form-control" name="payment_due_date">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -78,11 +174,18 @@
                             </div>
                         </div>
                     </div>
-
                     <div id="products">
-                        <div class="product">
+                      <div class="product" id="product-item-1">
+                        <hr>
+                        <div class="product-header" align="center">
+                          <button type="button" class="btn btn-success" id="addProduct" onclick="addProductOne()"> 
+                          <i class="fas fa-plus"></i> &nbsp; Tambah Produk
+                        </button>
+                        </div>
+                        <hr>
+                        <div class="mt-3">
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                               <div class="form-group">
                                   <label for="supplier_id">Supplier</label>
                                   <select name="supplier_id[]" id="supplier" class="form-control">
@@ -93,11 +196,17 @@
                                   </select>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                               <div class="form-group">
                                 <label for="supplier_pic[]">Pic Supplier</label>
                                 <input type="text" id="supplier_pic" name="supplier_pic[]" class="form-control" required>
                               </div>    
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="qty">Kuantitas</label>
+                                  <input type="number" name="qty[]" class="form-control" required>
+                              </div>
                             </div>
                           </div>
 
@@ -126,54 +235,26 @@
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
-                                  <label for="unit_id">Harga</label>
+                                  <label for="unit_id">Harga Satuan</label>
                                   <input type="number" name="price[]" class="form-control" required>
                               </div>
                             </div>
                           </div>
-
-                            <div class="form-group">
-                                <label for="qty">Kuantitas</label>
-                                <input type="number" name="qty[]" class="form-control" required>
-                            </div>
                         </div>
+                      </div>
                     </div>
-            
-                    <div class="form-group">
-                        <button type="button" class="btn btn-success" id="addProduct">Tambah Produk</button>
-                    </div>
-                </div>
-            
+                  </div>
+
                 <div class="card-footer" align="right">
-                    <a href="{{ url('/master/produk') }}" class="btn btn-warning">Batal</a>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                  <a href="{{ url('/pembelian/rencana') }}" class="btn btn-warning">Batal</a>
+                  &nbsp;&nbsp;
+                  <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
-            
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#addProduct').on('click', function() {
-            var productHtml = $('#products .product:first').clone();
-            productHtml.find('input, select').val('');
-            $('#products').append(productHtml);
-        });
-    });
-
-    $(document).ready(function() {
-      $('#suppler').on('change', function() {
-        var supplierId = $(this).val();
-        $.ajax({
-          url: '{{ url("/master/supplier/get") }}',
-          type: 'GET',
-          data: {
-            id: supplierId
-          },
-          success: function(response) {
-            $('#supplier_pic').val(response.data.pic);
-          }
-        });
-      });
-    });
-</script>
-@endpush
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+@endsection

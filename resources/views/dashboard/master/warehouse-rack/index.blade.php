@@ -72,10 +72,12 @@
             <i class="fas fa-arrow-circle-left"></i>
             Kembali Ke List Gudang
           </a>
+          @if(Auth::user()->role != 'head_office')
           <a style="cursor: pointer;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
+          @endif
         </div>
       </div>
       <div class="row">
@@ -100,6 +102,7 @@
                     <td>{{$key+1}}</td>
                     <td>{{$item->name}}</td>
                     <td>
+                      @if(Auth::user()->role != 'head_office')
                       <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm" 
                          data-toggle="modal" data-target="#modal-edit-{{$item->wr_id}}">
                         <i class="fas fa-edit"></i>
@@ -109,7 +112,8 @@
                          href="{{url('/master/gudang-rak/delete/'.$item->wr_id)}}" 
                          onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
                         <i class="fas fa-trash"></i>
-                      </a>  
+                      </a> 
+                      @endif 
                     </td>
                   </tr>
                   {{-- @include('dashboard.master.warehouse-rack.modal-replace') --}}

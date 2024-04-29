@@ -17,11 +17,13 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('shift_id');
             $table->foreign('shift_id')->references('id')->on('shifts')->onDelete('cascade');
-            $table->date('date');
-            $table->dateTime('start', precision: 0);
-            $table->dateTime('end', precision: 0)->nullable();
+            $table->date('date_start');
+            $table->date('date_end')->nullable();
+            $table->time('start', precision: 0);
+            $table->time('end', precision: 0)->nullable();
             $table->unsignedBigInteger('cash_in_hand');
             $table->unsignedBigInteger('end_cash');
+            $table->enum('status',['active','deactive']);
             $table->timestamps();
         });
     }

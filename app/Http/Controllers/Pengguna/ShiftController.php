@@ -16,7 +16,7 @@ class ShiftController extends Controller
 
     public function index(Request $request)
     {
-        $data = DB::table('shifts')->get();
+        $data = DB::table('shifts')->where('id','!=',0)->get();
         return view('dashboard.pengguna.shift.index',compact('data'));
     }
 

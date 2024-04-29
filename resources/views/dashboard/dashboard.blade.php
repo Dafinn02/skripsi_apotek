@@ -38,14 +38,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>150</sup></h3>
+                <h3>{{$penjualan}}</sup></h3>
 
                 <p>Total Penjualan</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{url('laporan/report_penjualan')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
          
@@ -53,14 +53,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3>{{$pembelian}}</h3>
 
                 <p>Total Pembelian</p>
               </div>
               <div class="icon">
                <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{url('pembelian/pesanan')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
          
@@ -80,13 +80,13 @@
             <!-- small box -->
             <div class="small-box bg-teal">
               <div class="inner">
-                <h3>50</sup></h3>
+                <h3>{{$pelanggan}}</sup></h3>
                 <p>Pelanggan</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-stalker"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{url('penjualan/pelanggan')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
          
@@ -94,14 +94,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>20</h3>
+                <h3>{{$supplier}}</h3>
 
                 <p>Supplier</p>
               </div>
               <div class="icon">
                 <i class="ion ion-ios-filing"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{url('pembelian/supplier')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 
@@ -109,14 +109,14 @@
             <!-- small box -->
             <div class="small-box bg-primary">
               <div class="inner">
-                <h3>50</sup></h3>
+                <h3>{{$produk}}</sup></h3>
 
                 <p>Produk</p>
               </div>
               <div class="icon">
                 <i class="ion ion-medkit"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{url('master/produk')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
          

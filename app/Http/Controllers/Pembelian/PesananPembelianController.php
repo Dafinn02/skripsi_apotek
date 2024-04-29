@@ -14,22 +14,47 @@ class PesananPembelianController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-    	$data = DB::table('purchase_orders')->where('status','order')->get();
+    	$get = DB::table('purchase_orders');
+        $get->join('users', 'purchase_orders.user_id', '=', 'users.id');
+        $get->where('purchase_orders.status', 'order');
+        if($request->number_letter != null)
+        {
+            $get->where('number_letter',$request->number_letter);
+        }
+        $get->select('purchase_orders.*', 'users.name as user_name');
+        $get->orderBy('purchase_orders.created_at','DESC');
+        $get->get();
+        $data = $get->get();
     	$data = json_decode(json_encode($data),true);
     	foreach ($data as $key => $value) 
     	{
     		$item = DB::table('purchase_order_items as poi')
-    				->join('products as pd','pd.id','=','poi.product_id')
-    				->where('purchase_order_id',$value->id)
-    				->select('poi.*','pd.name as product_name')
-    				->get();
-    		$item = json_decode(json_encode($item),true);
-    		$data[$key]['item'] = $item;
+                    ->join('products as pd','pd.id','=','poi.product_id')
+                    ->join('suppliers as sp','sp.id','=','poi.supplier_id')
+                    ->join('units as un','un.id','=','poi.unit_id')
+                    ->where('purchase_order_id',$value['id'])
+                    ->select('poi.*','pd.name as product_name', 'sp.name as supplier_name', 'un.name as unit_name')
+                    ->get();
+            $item = json_decode(json_encode($item),true);
+            foreach ($item as $iKey => $iValue) 
+            {
+                $checkDistribution = DB::table('warehouse_rack_products')->where('purchase_order_item_id',$iValue['id'])->first();
+                if($checkDistribution)
+                {
+                    $item[$iKey]['distribution_date'] = $checkDistribution->created_at;
+                    $gudang = DB::table('warehouses')->where('id',$checkDistribution->warehouse_id)->first();
+                    $item[$iKey]['gudang'] = $gudang->name;
+                    $rak = DB::table('racks')->where('id',$checkDistribution->rack_id)->first();
+                    $item[$iKey]['rak'] = $rak->name;
+                }
+            }
+            $data[$key]['item'] = $item;
     	}
-
-    	return view('pembelian.pesanan.index',compact('data'));
+        $gudang = DB::table('warehouses')->get();
+        $rak = DB::table('racks')->get();
+    	return view('dashboard.pembelian.pesanan.index',compact('data','gudang','rak'));
     }
 
     public function distribution($id)
@@ -47,30 +72,21 @@ class PesananPembelianController extends Controller
 
     public function transferToWarehouse(Request $request)
     {
+        //dd($request->all());
         $createdAt = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
 
-        $product_id = array_unique($request->product_id);
-        foreach ($product_id as $key => $value) 
-        {
-           $qty = DB::table('purchase_order_items')
-                ->where('purchase_order_id',$request->purchase_order_id)
-                ->where('product_id',$value)
-                ->sum('qty');
+        DB::table('warehouse_rack_products')->insert([
+            'purchase_order_item_id'=>$request->purchase_order_item_id,
+            'warehouse_id'=> $request->warehouse_id,
+            'rack_id'=>$request->rack_id,
+            'product_id'=>$request->product_id,
+            'qty'=>$request->qty,
+            'created_at'=>$createdAt
+        ]);
 
-            DB::table('warehouse_rack_products')->insert([
-                'purchase_order_id'=>$request->purchase_order_id,
-                'warehouse_id'=> $request->warehouse_id,
-                'rack_id'=>$request->rack_id,
-                'product_id'=>$value,
-                'qty'=>$qty,
-                'created_at'=>$createdAt
-            ]);
-
-            DB::table('purchase_order_items')
-                ->where('purchase_order_id',$request->purchase_order_id)
-                ->where('product_id',$value)
-                ->update(['distribution'=>true]);
-        }
+        DB::table('purchase_order_items')
+            ->where('id',$request->purchase_order_item_id)
+            ->update(['distribution'=>true]);
         
         $check = DB::table('purchase_order_items')
                     ->where('purchase_order_id',$request->purchase_order_id)
@@ -81,6 +97,13 @@ class PesananPembelianController extends Controller
             DB::table('purchase_orders')->where('id',$request->purchase_order_id)->update(['distribution'=>true]);
         }
 
-        return redirect()->back()->with('success','Berhasil mendsitribusikan produk');
+        //update stock
+        $qtyExist = DB::table('products')->where('id',$request->product_id)->first();
+        if($qtyExist)
+        {
+            $stock = $request->qty + $qtyExist->stock;
+            DB::table('products')->where('id',$request->product_id)->update(['stock'=>$stock]);
+        }
+        return redirect()->back()->with('success','Berhasil mendsitribusikan produk ke gudang');
     }
 }

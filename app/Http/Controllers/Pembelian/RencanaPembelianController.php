@@ -16,18 +16,25 @@ class RencanaPembelianController extends Controller
 
     public function index()
     {
-    	$data = DB::table('purchase_orders')->where('status','plan')->get();
+    	$data = DB::table('purchase_orders')
+					->join('users', 'purchase_orders.user_id', '=', 'users.id')
+					->select('purchase_orders.*', 'users.name as user_name')
+                    ->orderBy('purchase_orders.created_at','DESC')
+					->get();
     	$data = json_decode(json_encode($data),true);
     	foreach ($data as $key => $value) 
     	{
     		$item = DB::table('purchase_order_items as poi')
     				->join('products as pd','pd.id','=','poi.product_id')
-    				->where('purchase_order_id',$value->id)
-    				->select('poi.*','pd.name as product_name')
+					->join('suppliers as sp','sp.id','=','poi.supplier_id')
+					->join('units as un','un.id','=','poi.unit_id')
+    				->where('purchase_order_id',$value['id'])
+    				->select('poi.*','pd.name as product_name', 'sp.name as supplier_name', 'un.name as unit_name')
     				->get();
     		$item = json_decode(json_encode($item),true);
     		$data[$key]['item'] = $item;
     	}
+
     	return view('dashboard.pembelian.rencana.index',compact('data'));
     }
 
@@ -47,9 +54,9 @@ class RencanaPembelianController extends Controller
     	}
     	$createdAt = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
     	$date = Carbon::now('Asia/Jakarta')->format('Y-m-d');
-    	$poId = DB::table('purchase_orders')->insert([
+    	$poId = DB::table('purchase_orders')->insertGetId([
     		'user_id'=>Auth::user()->id,
-    		'number_latter'=>'PO-'.rand(),
+    		'number_letter'=>'PO-'.rand(),
     		'date'=> $date,
     		'payment_method'=>$request->payment_method,
     		'payment_due_date'=>$request->payment_due_date,
@@ -76,7 +83,7 @@ class RencanaPembelianController extends Controller
     			'updated_at'=> $createdAt
     		]);
     	}
-    	DB::table('purchase_orders')->where('id',$id)->update(['grandtotal'=>$grandTotal]);
+    	DB::table('purchase_orders')->where('id',$poId)->update(['grandtotal'=>$grandTotal]);	
 
     	return redirect('pembelian/rencana')->with('success','Berhasil menambahkan rencana pemblian');
     }
@@ -88,7 +95,8 @@ class RencanaPembelianController extends Controller
     	$suppliers = DB::table('suppliers')->get();
     	$units = DB::table('units')->get();
     	$product = DB::table('products')->get();
-    	return view('pembelian.rencana.edit',compact('data','item','suppliers','units','products'));
+
+    	return view('dashboard.pembelian.rencana.edit',compact('data','item','suppliers','units','product'));
     }
 
     public function update(Request $request ,$id)
@@ -104,7 +112,7 @@ class RencanaPembelianController extends Controller
     	{
     		$subtotal = $request->qty[$key] * $request->price[$key];
     		$grandTotal += $subtotal;
-    		DB::table('purchase_order_items')->insert([
+    		DB::table('purchase_order_items')->insertGetId([
     			'purchase_order_id'=>$id,
     			'supplier_id'=> $request->supplier_id[$key],
     			'product_id'=>$value,
@@ -113,8 +121,8 @@ class RencanaPembelianController extends Controller
     			'price'=> $request->price[$key],
     			'subtotal'=> $subtotal,
     			'supplier_pic'=> $request->supplier_pic[$key],
-    			'created_at'=> $createdAt,
-    			'updated_at'=> $createdAt
+    			'created_at'=> $updatedAt,
+    			'updated_at'=> $updatedAt
     		]);
     	}
     	DB::table('purchase_orders')->where('id',$id)->update([
@@ -124,11 +132,12 @@ class RencanaPembelianController extends Controller
     		'information'=>$request->information,
     		'updated_at'=> $updatedAt,
     	]);
+        return redirect('pembelian/rencana')->with('success','Berhasil mengubah rencana pemblian');
     }
 
-    public function delete()
+    public function delete($id)
     {
-    	DB::table('purchase_orders')->where('id',$id)->delete();
+        DB::table('purchase_orders')->where('id',$id)->delete();
     	return redirect('pembelian/rencana')->with('success','Berhasil menghapus rencana pemblian');
     }
 

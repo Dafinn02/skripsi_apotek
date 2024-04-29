@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3309
--- Generation Time: Feb 11, 2024 at 05:55 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Apr 26, 2024 at 05:05 AM
+-- Server version: 10.6.16-MariaDB-0ubuntu0.22.04.1
+-- PHP Version: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,22 +24,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cashiers`
+--
+
+CREATE TABLE `cashiers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `number` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cashiers`
+--
+
+INSERT INTO `cashiers` (`id`, `user_id`, `number`, `name`, `address`, `phone`, `created_at`, `updated_at`) VALUES
+(1, 2, '0012305567', 'Alfian Muhammad', ' Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014234', NULL, NULL),
+(2, 3, '0012305569', 'Deny Sumargo', ' Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014239', NULL, NULL),
+(3, 4, '0012305569', 'Billie Elish', ' Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014238', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
 CREATE TABLE `categories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `categories`
 --
 
 INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Obat Keras A2', '2024-02-10 16:04:17', '2024-02-10 16:04:46');
+(1, 'Obat Bebas', NULL, NULL),
+(2, 'Obat Bebas Terbatas', NULL, NULL),
+(3, 'Obat Keras', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -50,8 +78,71 @@ INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `customers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `address` text DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
+  `phone` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `name`, `phone`, `created_at`, `updated_at`) VALUES
+(1, 'Andy Malarangin', '089786441234', NULL, NULL),
+(2, 'Setias Mahatir', '089786441235', NULL, NULL),
+(3, 'Hotman Paris', '089786441236', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(2, '2024_03_06_070954_create_users_table', 1),
+(3, '2024_03_06_070955_create_shifts_table', 1),
+(4, '2024_03_06_070956_create_user_shift_sessions_table', 1),
+(5, '2024_03_06_070957_create_cashiers_table', 1),
+(6, '2024_03_06_071743_create_suppliers_table', 1),
+(7, '2024_03_06_121914_create_categories_table', 1),
+(8, '2024_03_11_153041_create_units_table', 1),
+(9, '2024_03_11_153543_create_raks_table', 1),
+(10, '2024_03_11_153615_create_warehouses_table', 1),
+(11, '2024_03_12_071636_create_products_table', 1),
+(12, '2024_03_16_163148_create_purchase_orders_table', 1),
+(13, '2024_03_16_163149_create_purchase_order_items_table', 1),
+(14, '2024_03_16_163159_create_warehouse_racks_table', 1),
+(15, '2024_03_16_163160_create_customers_table', 1),
+(16, '2024_03_16_163169_create_transactions_table', 1),
+(17, '2024_03_16_163179_create_transaction_items_table', 1),
+(18, '2024_03_16_163189_create_warehouse_rack_products_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `opname`
+--
+
+CREATE TABLE `opname` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `rack_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `qty` int(11) NOT NULL,
+  `type` enum('addition','subtraction') NOT NULL,
+  `date` date NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -59,75 +150,21 @@ CREATE TABLE `customers` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `menus`
+-- Table structure for table `personal_access_tokens`
 --
 
-CREATE TABLE `menus` (
+CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `route` varchar(255) DEFAULT NULL,
-  `icon` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `menus`
---
-
-INSERT INTO `menus` (`id`, `name`, `route`, `icon`, `created_at`, `updated_at`) VALUES
-(1, 'Dashboard', 'dashboard', 'fas fa-home', '2022-03-02 22:21:33', '2022-09-12 08:19:37'),
-(2, 'Profile', 'profile', 'fas fa-user', '2022-01-14 04:22:30', '2022-09-12 08:19:37'),
-(3, 'Penjualan', NULL, 'fas fa-exchange-alt', '2022-03-02 22:21:33', '2022-09-12 08:19:37'),
-(4, 'Persediaan', NULL, 'fas fa-database', '2022-01-14 04:22:30', '2022-09-12 08:19:37'),
-(5, 'Pembelian', NULL, 'fas fa-shopping-cart', '2022-03-02 22:21:33', '2022-09-12 08:19:37'),
-(6, 'Laporan', NULL, 'fas fa-file-medical-alt', '2022-01-14 04:22:30', '2022-09-12 08:19:37'),
-(7, 'Pengguna Sistem', NULL, 'fas fa-users', '2022-03-02 22:21:33', '2022-09-12 08:19:37'),
-(8, 'Sistem', NULL, 'fas fa-cog', '2022-01-14 04:22:30', '2022-09-12 08:19:37');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `menu_items`
---
-
-CREATE TABLE `menu_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `menu_id` bigint(20) UNSIGNED NOT NULL,
-  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `route` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `menu_items`
---
-
-INSERT INTO `menu_items` (`id`, `menu_id`, `parent_id`, `name`, `route`, `created_at`, `updated_at`) VALUES
-(1, 3, NULL, 'Transaksi Baru', 'transaction/new', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(2, 3, NULL, 'Daftar Transaksi', 'transaction', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(3, 4, NULL, 'Gudang', 'warehouse', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(4, 4, NULL, 'Supplier', 'supplier', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(5, 4, NULL, 'Produk', NULL, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(6, 4, 5, 'Daftar Kategori', 'product/category', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(7, 4, 5, 'Daftar Produk', 'product', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(8, 4, NULL, 'Stok', NULL, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(9, 4, 8, 'Stok Kadaluarsa', 'stock/expired', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(10, 4, 8, 'Stok Opname', 'stock/opname', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(11, 4, 8, 'Riwayat Stok Opname', 'stock/opname/history', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(12, 5, NULL, 'Rencana Pembelian', 'purchase_plan', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(13, 5, NULL, 'Pesanan Pembelian', 'purchase_order', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(14, 6, NULL, 'Pembelian', 'report/purchase', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(15, 6, NULL, 'Penjualan', 'report/sales', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(16, 6, NULL, 'Persediaan', 'report/supply', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(17, 7, NULL, 'Apoteker', 'users?role=1', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(18, 7, NULL, 'Kepala Apotek', 'users?role=3', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(19, 7, NULL, 'Kasir', 'users?role=2', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(20, 8, NULL, 'Role', 'users/role', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(21, 8, NULL, 'Permission', 'users/permission', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(22, 8, NULL, 'Log Aktivitas', 'users/log', '2022-02-06 19:54:27', '2022-09-12 08:19:37');
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -137,197 +174,90 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `parent_id`, `name`, `route`, `create
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `category_id` bigint(20) UNSIGNED NOT NULL,
-  `code` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `basic_price` varchar(30) NOT NULL,
-  `sales_price` varchar(30) NOT NULL COMMENT 'basic_price + markup',
-  `markup` varchar(30) NOT NULL COMMENT 'basic_price x markup_percentage',
-  `markup_percentage` int(3) NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `status` enum('for_sale','not_for_sale') NOT NULL,
-  `stock_ready_to_sale` int(10) NOT NULL DEFAULT 0,
-  `stock_warehouse` int(10) NOT NULL DEFAULT 0,
-  `stock_total` int(10) NOT NULL DEFAULT 0,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `code` varchar(255) NOT NULL,
+  `supplier_id` bigint(20) UNSIGNED NOT NULL,
+  `unit_id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `price` bigint(20) UNSIGNED NOT NULL,
+  `active_zat` varchar(255) DEFAULT NULL,
+  `power_shape` varchar(255) DEFAULT NULL,
+  `min_stock` bigint(20) UNSIGNED DEFAULT NULL,
+  `max_stock` bigint(20) UNSIGNED DEFAULT NULL,
+  `stock` bigint(20) UNSIGNED DEFAULT NULL,
+  `recipe` enum('yes','no') NOT NULL DEFAULT 'no',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `category_id`, `code`, `name`, `basic_price`, `sales_price`, `markup`, `markup_percentage`, `unit`, `status`, `stock_ready_to_sale`, `stock_warehouse`, `stock_total`, `created_at`, `updated_at`) VALUES
-(1, 1, 'DSFSD12', 'test', '500000', '600000', '100000', 20, 'strip', 'for_sale', 0, 0, 0, '2024-02-10 19:02:47', '2024-02-10 19:10:27');
+INSERT INTO `products` (`id`, `name`, `code`, `supplier_id`, `unit_id`, `category_id`, `price`, `active_zat`, `power_shape`, `min_stock`, `max_stock`, `stock`, `recipe`, `created_at`, `updated_at`) VALUES
+(1, 'Paracetamol', 'PRC', 1, 1, 1, 15000, 'active zat 1', 'berat', 10, 100, 0, 'yes', NULL, NULL),
+(2, 'Amoksilin', 'AMK', 2, 2, 2, 16000, 'active zat 1', 'berat', 10, 50, 0, 'no', NULL, NULL),
+(3, 'Diapet', 'DPT', 3, 3, 3, 10000, 'active zat 1', 'ringan', 10, 50, 0, 'no', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_stock_opnames`
+-- Table structure for table `purchase_orders`
 --
 
-CREATE TABLE `product_stock_opnames` (
+CREATE TABLE `purchase_orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `number_letter` varchar(255) NOT NULL,
   `date` date NOT NULL,
-  `status` enum('open','progress','closed') NOT NULL,
-  `description` text DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `payment_method` enum('cash','transfer') NOT NULL,
+  `proof` varchar(255) DEFAULT NULL,
+  `payment_due_date` date DEFAULT NULL,
+  `grandtotal` bigint(20) UNSIGNED NOT NULL,
+  `information` varchar(255) DEFAULT NULL,
+  `status` enum('plan','order') NOT NULL DEFAULT 'plan',
+  `distribution` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `purchase_orders`
+--
+
+INSERT INTO `purchase_orders` (`id`, `user_id`, `number_letter`, `date`, `payment_method`, `proof`, `payment_due_date`, `grandtotal`, `information`, `status`, `distribution`, `created_at`, `updated_at`) VALUES
+(3, 1, 'PO-1205932449', '2024-04-25', 'transfer', '664839046_proof_table.png', '2024-05-01', 3450000, 'testing', 'order', 1, '2024-04-24 20:02:25', '2024-04-24 21:02:24');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_stock_opname_rts_items`
+-- Table structure for table `purchase_order_items`
 --
 
-CREATE TABLE `product_stock_opname_rts_items` (
+CREATE TABLE `purchase_order_items` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `product_stock_opname_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `qty_real` int(10) NOT NULL,
-  `qty_system` int(10) NOT NULL,
-  `difference` int(10) NOT NULL DEFAULT 0,
-  `status` enum('valid','invalid') NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='product stock opname ready to sales item';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_stock_opname_warehouse_items`
---
-
-CREATE TABLE `product_stock_opname_warehouse_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `product_stock_opname_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
-  `rack_id` bigint(20) UNSIGNED NOT NULL,
-  `qty_system` int(10) NOT NULL,
-  `qty_real` int(10) NOT NULL,
-  `difference` int(10) NOT NULL DEFAULT 0,
-  `status` enum('valid','invalid') NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_stock_pos`
---
-
-CREATE TABLE `product_stock_pos` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `puchase_order_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
-  `rack_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` int(10) NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `qty_per_unit` int(10) NOT NULL,
-  `date` date NOT NULL,
-  `expired_date` date NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='product stock purchase orders';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_stock_ready_to_sales`
---
-
-CREATE TABLE `product_stock_ready_to_sales` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
-  `rack_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` int(10) NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `expired_date` date NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_stock_transaction`
---
-
-CREATE TABLE `product_stock_transaction` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `transaction_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` int(10) NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `date` date NOT NULL,
-  `status` enum('sale','return') NOT NULL COMMENT 'jika sale berkurang, jika return bertambah',
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `puchase_orders`
---
-
-CREATE TABLE `puchase_orders` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `date_submission` date NOT NULL,
-  `date_approved` date DEFAULT NULL,
-  `sp_number` varchar(255) NOT NULL,
-  `status` enum('open','revision','accept','declined','closed') NOT NULL DEFAULT 'open',
-  `assign_warehouse` enum('not','waiting','done') NOT NULL DEFAULT 'not',
-  `subtotal` varchar(30) NOT NULL DEFAULT '0',
-  `grandtotal` varchar(30) NOT NULL DEFAULT '0',
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `puchase_order_histories`
---
-
-CREATE TABLE `puchase_order_histories` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `puchase_order_id` bigint(20) UNSIGNED NOT NULL,
-  `content` text NOT NULL,
-  `created_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `puchase_order_items`
---
-
-CREATE TABLE `puchase_order_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `puchase_order_id` bigint(20) UNSIGNED NOT NULL,
+  `purchase_order_id` bigint(20) UNSIGNED NOT NULL,
   `supplier_id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` int(10) NOT NULL,
-  `unit` varchar(30) NOT NULL,
-  `discount` varchar(30) NOT NULL DEFAULT '0',
-  `discount_type` enum('fix','percentage') DEFAULT NULL,
-  `subtotal` varchar(30) NOT NULL DEFAULT '0',
-  `total` varchar(30) NOT NULL DEFAULT '0',
-  `plain_date` date DEFAULT NULL,
-  `nota` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `unit_id` bigint(20) UNSIGNED NOT NULL,
+  `qty` bigint(20) UNSIGNED NOT NULL,
+  `price` varchar(255) NOT NULL,
+  `subtotal` varchar(255) NOT NULL,
+  `supplier_pic` varchar(255) DEFAULT NULL,
+  `distribution` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `purchase_order_items`
+--
+
+INSERT INTO `purchase_order_items` (`id`, `purchase_order_id`, `supplier_id`, `product_id`, `unit_id`, `qty`, `price`, `subtotal`, `supplier_pic`, `distribution`, `created_at`, `updated_at`) VALUES
+(12, 3, 1, 1, 5, 100, '15000', '1500000', 'Pak Hari', 1, '2024-04-24 20:03:45', '2024-04-24 20:03:45'),
+(13, 3, 1, 2, 7, 100, '10000', '1000000', 'Pak Hari', 0, '2024-04-24 20:03:45', '2024-04-24 20:03:45'),
+(14, 3, 2, 3, 11, 100, '5000', '500000', 'Bu Marni', 0, '2024-04-24 20:03:45', '2024-04-24 20:03:45'),
+(15, 3, 3, 2, 4, 50, '9000', '450000', 'Pak Gilang', 0, '2024-04-24 20:03:45', '2024-04-24 20:03:45');
 
 -- --------------------------------------------------------
 
@@ -337,163 +267,45 @@ CREATE TABLE `puchase_order_items` (
 
 CREATE TABLE `racks` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `capacity` int(10) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `racks`
 --
 
-INSERT INTO `racks` (`id`, `warehouse_id`, `name`, `capacity`, `created_at`, `updated_at`) VALUES
-(1, 3, 'Rack A1', 80, '2024-02-10 15:24:38', '2024-02-10 15:43:05'),
-(2, 3, 'RACK A2', 100, '2024-02-10 16:21:59', NULL);
+INSERT INTO `racks` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Obat Botol', NULL, NULL),
+(2, 'Obat Kaplet', NULL, NULL),
+(3, 'Rak Box', '2024-04-24 22:05:47', NULL),
+(4, 'Rak Dos', '2024-04-24 22:05:55', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
+-- Table structure for table `shifts`
 --
 
-CREATE TABLE `roles` (
+CREATE TABLE `shifts` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `route` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `roles`
+-- Dumping data for table `shifts`
 --
 
-INSERT INTO `roles` (`id`, `name`, `route`, `created_at`, `updated_at`) VALUES
-(0, 'Super Admin', 'dashboard', '2022-02-06 19:54:27', '2024-02-08 03:43:41'),
-(1, 'Apoteker', 'dashboard', '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(2, 'Kasir', 'users/permission', '2022-01-14 04:22:30', '2024-02-08 05:10:01'),
-(3, 'Kepala Apotek', 'dashboard', '2022-01-14 04:22:30', '2022-09-12 08:19:37');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `role_menus`
---
-
-CREATE TABLE `role_menus` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED NOT NULL,
-  `menu_id` bigint(20) UNSIGNED NOT NULL,
-  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `item_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `allowed` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `role_menus`
---
-
-INSERT INTO `role_menus` (`id`, `role_id`, `menu_id`, `parent_id`, `item_id`, `allowed`, `created_at`, `updated_at`) VALUES
-(1, 1, 3, NULL, 1, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(2, 1, 3, NULL, 2, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(3, 1, 4, NULL, 3, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(4, 1, 4, NULL, 4, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(5, 1, 4, NULL, 5, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(6, 1, 4, 5, 6, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(7, 1, 4, 5, 7, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(8, 1, 4, NULL, 8, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(9, 1, 4, 8, 9, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(10, 1, 4, 8, 10, 0, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(11, 1, 4, 8, 11, 0, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(12, 1, 5, NULL, 12, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(13, 1, 5, NULL, 13, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(14, 1, 6, NULL, 14, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(15, 1, 6, NULL, 15, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(16, 1, 6, NULL, 16, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(17, 1, 7, NULL, 17, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(18, 1, 7, NULL, 18, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(19, 1, 7, NULL, 19, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(20, 1, 8, NULL, 20, 0, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(21, 1, 8, NULL, 21, 0, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(22, 1, 8, NULL, 22, 0, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(23, 0, 3, NULL, 1, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(24, 0, 3, NULL, 2, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(25, 0, 4, NULL, 3, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(26, 0, 4, NULL, 4, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(27, 0, 4, NULL, 5, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(28, 0, 4, 5, 6, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(29, 0, 4, 5, 7, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(30, 0, 4, NULL, 8, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(31, 0, 4, 8, 9, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(32, 0, 4, 8, 10, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(33, 0, 4, 8, 11, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(34, 0, 5, NULL, 12, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(35, 0, 5, NULL, 13, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(36, 0, 6, NULL, 14, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(37, 0, 6, NULL, 15, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(38, 0, 6, NULL, 16, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(39, 0, 7, NULL, 17, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(40, 0, 7, NULL, 18, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(41, 0, 7, NULL, 19, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(42, 0, 8, NULL, 20, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(43, 0, 8, NULL, 21, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(44, 0, 8, NULL, 22, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(89, 2, 3, NULL, 1, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(90, 2, 3, NULL, 2, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(91, 2, 4, NULL, 3, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(92, 2, 4, NULL, 4, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(93, 2, 4, NULL, 5, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(94, 2, 4, 5, 6, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(95, 2, 4, 5, 7, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(96, 2, 4, NULL, 8, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(97, 2, 4, 8, 9, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(98, 2, 4, 8, 10, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(99, 2, 4, 8, 11, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(100, 2, 5, NULL, 12, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(101, 2, 5, NULL, 13, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(102, 2, 6, NULL, 14, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(103, 2, 6, NULL, 15, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(104, 2, 6, NULL, 16, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(105, 2, 7, NULL, 17, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(106, 2, 7, NULL, 18, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(107, 2, 7, NULL, 19, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(108, 2, 8, NULL, 20, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(109, 2, 8, NULL, 21, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(110, 2, 8, NULL, 22, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(111, 3, 3, NULL, 1, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(112, 3, 3, NULL, 2, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(113, 3, 4, NULL, 3, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(114, 3, 4, NULL, 4, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(115, 3, 4, NULL, 5, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(116, 3, 4, 5, 6, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(117, 3, 4, 5, 7, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(118, 3, 4, NULL, 8, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(119, 3, 4, 8, 9, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(120, 3, 4, 8, 10, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(121, 3, 4, 8, 11, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(122, 3, 5, NULL, 12, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(123, 3, 5, NULL, 13, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(124, 3, 6, NULL, 14, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(125, 3, 6, NULL, 15, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(126, 3, 6, NULL, 16, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(127, 3, 7, NULL, 17, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(128, 3, 7, NULL, 18, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(129, 3, 7, NULL, 19, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(130, 3, 8, NULL, 20, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(131, 3, 8, NULL, 21, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(132, 3, 8, NULL, 22, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(133, 0, 1, NULL, NULL, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(134, 0, 2, NULL, NULL, 1, '2022-01-14 04:22:30', '2022-09-12 08:19:37'),
-(135, 1, 1, NULL, NULL, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(136, 1, 2, NULL, NULL, 1, '2022-01-14 04:22:30', '2022-09-12 08:19:37'),
-(137, 2, 1, NULL, NULL, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(138, 2, 2, NULL, NULL, 1, '2022-01-14 04:22:30', '2022-09-12 08:19:37'),
-(139, 3, 1, NULL, NULL, 1, '2022-02-06 19:54:27', '2022-09-12 08:19:37'),
-(140, 3, 2, NULL, NULL, 1, '2022-01-14 04:22:30', '2022-09-12 08:19:37');
+INSERT INTO `shifts` (`id`, `name`, `start_time`, `end_time`, `created_at`, `updated_at`) VALUES
+(0, 'Admin Activity', NULL, NULL, NULL, NULL),
+(1, 'Pagi', '07:30:00', '12:30:00', NULL, NULL),
+(2, 'Siang', '12:40:00', '18:30:00', NULL, NULL),
+(3, 'Malam', '18:40:00', '12:30:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -504,20 +316,22 @@ INSERT INTO `role_menus` (`id`, `role_id`, `menu_id`, `parent_id`, `item_id`, `a
 CREATE TABLE `suppliers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `address` text NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `pic` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `phone` varchar(255) NOT NULL,
+  `pic` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `suppliers`
 --
 
-INSERT INTO `suppliers` (`id`, `name`, `address`, `phone`, `pic`, `email`, `created_at`, `updated_at`) VALUES
-(2, 'POLITEKNIK KESEHATAN MALANG', 'Ijen St No.77C, Oro-oro Dowo, Klojen,', '0341551893', 'pak yuri', 'direktorat@poltekkes-malang.ac.id', '2024-02-10 14:40:22', NULL);
+INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `pic`, `address`, `created_at`, `updated_at`) VALUES
+(1, 'PT. ABC', 'abc@gmail.com', '08129956789', 'Bapak Alfian', 'Jl. ABC No. 1', NULL, NULL),
+(2, 'PT. DEF', 'defpt@gmail.com', '08123454289', 'Bapak Budi', 'Jl. DEF No. 2', NULL, NULL),
+(3, 'PT. GHI', 'ghipt@gmail.com', '08123456789', 'Bapak Candra', 'Jl. GHI No. 3', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -528,21 +342,28 @@ INSERT INTO `suppliers` (`id`, `name`, `address`, `phone`, `pic`, `email`, `crea
 CREATE TABLE `transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `customer_id` bigint(20) UNSIGNED NOT NULL,
-  `code` varchar(255) NOT NULL,
+  `shift_id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `total_qty` int(10) NOT NULL,
-  `service_fee` varchar(30) NOT NULL DEFAULT '0',
-  `embalase_fee` varchar(30) NOT NULL DEFAULT '0',
-  `shipping_fee` varchar(30) NOT NULL DEFAULT '0',
-  `discount_type` enum('fix','percentage') NOT NULL,
-  `discount` varchar(30) NOT NULL DEFAULT '0',
-  `subtotal` varchar(30) NOT NULL DEFAULT '0',
-  `grandtotal` varchar(30) NOT NULL DEFAULT '0',
-  `status` enum('paid','unpaid') NOT NULL DEFAULT 'unpaid',
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `customer_name` varchar(255) DEFAULT NULL,
+  `customer_phone` varchar(255) DEFAULT NULL,
+  `service_cost` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `emblase_cost` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `shipping_cost` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `lainnya` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `discount_type` enum('fix_price','percentage') DEFAULT NULL,
+  `discount` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `grandtotal` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `shift_id`, `date`, `customer_name`, `customer_phone`, `service_cost`, `emblase_cost`, `shipping_cost`, `lainnya`, `discount_type`, `discount`, `grandtotal`, `created_at`, `updated_at`) VALUES
+(2, 1, 0, '2024-04-26', 'Ananda Pratama', '345345', 1000, 0, 0, 0, NULL, 0, 130000, '2024-04-25 19:04:52', NULL),
+(3, 3, 1, '2024-04-26', 'Awang Syukri', '1235678854', 1000, 9000, 0, 0, NULL, 0, 85000, '2024-04-25 22:54:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -553,13 +374,84 @@ CREATE TABLE `transactions` (
 CREATE TABLE `transaction_items` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `transaction_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` int(10) NOT NULL,
-  `price` varchar(30) NOT NULL,
-  `total` varchar(30) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `product_name` varchar(255) NOT NULL,
+  `product_code` varchar(255) NOT NULL,
+  `product_price` bigint(20) UNSIGNED NOT NULL,
+  `qty` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `transaction_items`
+--
+
+INSERT INTO `transaction_items` (`id`, `transaction_id`, `product_name`, `product_code`, `product_price`, `qty`, `created_at`, `updated_at`) VALUES
+(4, 2, 'Paracetamol', 'PRC', 15000, 1, '2024-04-25 19:04:52', '2024-04-25 19:04:52'),
+(5, 2, 'Amoksilin', 'AMK', 16000, 4, '2024-04-25 19:04:52', '2024-04-25 19:04:52'),
+(6, 2, 'Diapet', 'DPT', 10000, 5, '2024-04-25 19:04:52', '2024-04-25 19:04:52'),
+(7, 3, 'Paracetamol', 'PRC', 15000, 5, '2024-04-25 22:54:49', '2024-04-25 22:54:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `units`
+--
+
+CREATE TABLE `units` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `units`
+--
+
+INSERT INTO `units` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Ampul', NULL, NULL),
+(2, 'Batang', NULL, NULL),
+(3, 'Biji', NULL, NULL),
+(4, 'Botol', NULL, NULL),
+(5, 'Box', NULL, NULL),
+(6, 'Buah', NULL, NULL),
+(7, 'Bungkus', NULL, NULL),
+(8, 'Butir', NULL, NULL),
+(9, 'cc', NULL, NULL),
+(10, 'cm', NULL, NULL),
+(11, 'Dosin', NULL, NULL),
+(12, 'DUS', NULL, NULL),
+(13, 'Flakon', NULL, NULL),
+(14, 'Fls', NULL, NULL),
+(15, 'Galon', NULL, NULL),
+(16, 'gram', NULL, NULL),
+(17, 'Ikat', NULL, NULL),
+(18, 'Iris', NULL, NULL),
+(19, 'Kaleng', NULL, NULL),
+(20, 'Kapsul', NULL, NULL),
+(21, 'Karton', NULL, NULL),
+(22, 'Karung', NULL, NULL),
+(23, 'kg', NULL, NULL),
+(24, 'Kotak', NULL, NULL),
+(25, 'L', NULL, NULL),
+(26, 'Lembar', NULL, NULL),
+(27, 'm', NULL, NULL),
+(28, 'mg', NULL, NULL),
+(29, 'mL', NULL, NULL),
+(30, 'mm', NULL, NULL),
+(31, 'Pcs', NULL, NULL),
+(32, 'Plabot', NULL, NULL),
+(33, 'Pot', NULL, NULL),
+(34, 'Pound', NULL, NULL),
+(35, 'Sachet', NULL, NULL),
+(36, 'Satuan', NULL, NULL),
+(37, 'Sloki', NULL, NULL),
+(38, 'Strip', NULL, NULL),
+(39, 'Supp', NULL, NULL),
+(40, 'Tablet', NULL, NULL),
+(41, 'Tube', NULL, NULL),
+(42, 'Unit', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -569,7 +461,7 @@ CREATE TABLE `transaction_items` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `role` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -581,11 +473,40 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `name`, `username`, `password`, `created_at`, `updated_at`) VALUES
-(1, 0, 'Super Admin', 'superadmin', '$2y$12$pt0ZmX743ZUOT3Uh59mh3ORHPulD./4VDn0.QkIl/UvoiR4yAcJEq', '2022-01-08 05:40:28', '2021-06-02 13:45:57'),
-(2, 1, 'Alfian Muhammad', 'alfian_muhammad', '$2y$12$pt0ZmX743ZUOT3Uh59mh3ORHPulD./4VDn0.QkIl/UvoiR4yAcJEq', '2022-01-08 05:40:28', '2021-06-02 13:45:57'),
-(3, 2, 'Muhammad Alfian ', 'muhammad_alfian', '$2y$12$pt0ZmX743ZUOT3Uh59mh3ORHPulD./4VDn0.QkIl/UvoiR4yAcJEq', '2022-01-08 05:40:28', '2021-06-02 13:45:57'),
-(4, 3, 'Alfian Saja', 'alfian', '$2y$12$pt0ZmX743ZUOT3Uh59mh3ORHPulD./4VDn0.QkIl/UvoiR4yAcJEq', '2022-01-08 05:40:28', '2021-06-02 13:45:57');
+INSERT INTO `users` (`id`, `role`, `name`, `username`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'Hasnawi Mohas', 'hasnawi_mohas', '$2y$12$e6gagEZOguWCXJw76MqQ8Our2uTXYJGkHq6RVeS0wBcJUSKubQWM.', NULL, NULL),
+(2, 'cashier', 'Alfian Muhammad', '0012305567', '$2y$12$sUAsm7Uvcruz8nqW/GGnEuIvVsOd.0.qn6HC148qxgzgMl0LZ8EzG', NULL, NULL),
+(3, 'cashier', 'Deny Sumargo', '0012305569', '$2y$12$uGAeIvHl2VNr.PpnL5y4j.1B6yWhR/TFylJY9nKST4H7pA6jp.ww.', NULL, NULL),
+(4, 'cashier', 'Billie Elish', '0012305568', '$2y$12$KQjULuEO3Asi4nxmmFw.VeDw5U58gh3EGvaGeC7azXS2zAn49Z/g6', NULL, NULL),
+(5, 'head_office', 'Abraham Samad', 'abraham_samad', '$2y$12$e6gagEZOguWCXJw76MqQ8Our2uTXYJGkHq6RVeS0wBcJUSKubQWM.', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_shift_sessions`
+--
+
+CREATE TABLE `user_shift_sessions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `shift_id` bigint(20) UNSIGNED NOT NULL,
+  `date_start` date NOT NULL,
+  `date_end` date DEFAULT NULL,
+  `start` time NOT NULL,
+  `end` time DEFAULT NULL,
+  `cash_in_hand` bigint(20) UNSIGNED NOT NULL,
+  `end_cash` bigint(20) UNSIGNED NOT NULL,
+  `status` enum('active','deactive') NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_shift_sessions`
+--
+
+INSERT INTO `user_shift_sessions` (`id`, `user_id`, `shift_id`, `date_start`, `date_end`, `start`, `end`, `cash_in_hand`, `end_cash`, `status`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, '2024-04-26', '2024-04-26', '04:52:59', '05:59:14', 50000, 85000, 'deactive', '2024-04-25 21:52:59', '2024-04-25 22:59:14');
 
 -- --------------------------------------------------------
 
@@ -596,22 +517,80 @@ INSERT INTO `users` (`id`, `role_id`, `name`, `username`, `password`, `created_a
 CREATE TABLE `warehouses` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `warehouses`
 --
 
 INSERT INTO `warehouses` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Gudang Selatan BC', '2024-02-10 15:14:04', '2024-02-10 15:14:16'),
-(3, 'Gudang Selatan BD', '2024-02-10 15:42:16', NULL),
-(4, 'Gudang Selatan BF', '2024-02-10 16:21:39', NULL);
+(1, 'Utama', NULL, NULL),
+(2, 'Cadangan', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warehouse_racks`
+--
+
+CREATE TABLE `warehouse_racks` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `rack_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `warehouse_racks`
+--
+
+INSERT INTO `warehouse_racks` (`id`, `warehouse_id`, `rack_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, NULL, NULL),
+(2, 1, 2, NULL, NULL),
+(3, 2, 1, NULL, NULL),
+(4, 1, 3, '2024-04-24 22:06:10', NULL),
+(5, 1, 4, '2024-04-24 22:06:16', NULL),
+(6, 2, 2, '2024-04-24 22:06:27', NULL),
+(7, 2, 3, '2024-04-24 22:06:32', NULL),
+(8, 2, 4, '2024-04-24 22:06:37', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warehouse_rack_products`
+--
+
+CREATE TABLE `warehouse_rack_products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `purchase_order_item_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `rack_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `qty` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `warehouse_rack_products`
+--
+
+INSERT INTO `warehouse_rack_products` (`id`, `purchase_order_item_id`, `warehouse_id`, `rack_id`, `product_id`, `qty`, `created_at`, `updated_at`) VALUES
+(1, 12, 1, 3, 1, 100, '2024-04-24 22:23:00', NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cashiers`
+--
+ALTER TABLE `cashiers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cashiers_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `categories`
@@ -626,122 +605,67 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menus`
+-- Indexes for table `migrations`
 --
-ALTER TABLE `menus`
+ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menu_items`
+-- Indexes for table `opname`
 --
-ALTER TABLE `menu_items`
+ALTER TABLE `opname`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `menu_items` (`menu_id`),
-  ADD KEY `item_parent` (`parent_id`);
+  ADD KEY `opname_product` (`product_id`),
+  ADD KEY `opname_warehouse` (`warehouse_id`),
+  ADD KEY `opname_rack` (`rack_id`),
+  ADD KEY `opname_user` (`user_id`);
+
+--
+-- Indexes for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_categories` (`category_id`);
+  ADD UNIQUE KEY `products_code_unique` (`code`),
+  ADD KEY `products_supplier_id_foreign` (`supplier_id`),
+  ADD KEY `products_unit_id_foreign` (`unit_id`),
+  ADD KEY `products_category_id_foreign` (`category_id`);
 
 --
--- Indexes for table `product_stock_opnames`
+-- Indexes for table `purchase_orders`
 --
-ALTER TABLE `product_stock_opnames`
+ALTER TABLE `purchase_orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `pso_users` (`user_id`);
+  ADD KEY `purchase_orders_user_id_foreign` (`user_id`);
 
 --
--- Indexes for table `product_stock_opname_rts_items`
+-- Indexes for table `purchase_order_items`
 --
-ALTER TABLE `product_stock_opname_rts_items`
+ALTER TABLE `purchase_order_items`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `pso_rts_id` (`product_stock_opname_id`),
-  ADD KEY `pso_rts_product_id` (`product_id`);
-
---
--- Indexes for table `product_stock_opname_warehouse_items`
---
-ALTER TABLE `product_stock_opname_warehouse_items`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pso_whs_id` (`product_stock_opname_id`),
-  ADD KEY `pso_whs_product_id` (`product_id`),
-  ADD KEY `pso_whs_whs_id` (`warehouse_id`),
-  ADD KEY `pso_whs_rack_id` (`rack_id`);
-
---
--- Indexes for table `product_stock_pos`
---
-ALTER TABLE `product_stock_pos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pspo_id` (`puchase_order_id`),
-  ADD KEY `pspo_product_id` (`product_id`),
-  ADD KEY `pspo_rack_id` (`rack_id`),
-  ADD KEY `pspo_whs_id` (`warehouse_id`);
-
---
--- Indexes for table `product_stock_ready_to_sales`
---
-ALTER TABLE `product_stock_ready_to_sales`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `rts_product_id` (`product_id`),
-  ADD KEY `rts_rack_id` (`rack_id`),
-  ADD KEY `rts_whs_id` (`warehouse_id`);
-
---
--- Indexes for table `product_stock_transaction`
---
-ALTER TABLE `product_stock_transaction`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pst_product_id` (`product_id`),
-  ADD KEY `pst_trs_id` (`transaction_id`);
-
---
--- Indexes for table `puchase_orders`
---
-ALTER TABLE `puchase_orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `po_user_id` (`user_id`);
-
---
--- Indexes for table `puchase_order_histories`
---
-ALTER TABLE `puchase_order_histories`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `po_historis_po_id` (`puchase_order_id`);
-
---
--- Indexes for table `puchase_order_items`
---
-ALTER TABLE `puchase_order_items`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pos_item_id` (`puchase_order_id`),
-  ADD KEY `pos_supplier_id` (`supplier_id`),
-  ADD KEY `pos_product_id` (`product_id`);
+  ADD KEY `purchase_orders_items_purchase_order_id_foreign` (`purchase_order_id`),
+  ADD KEY `purchase_orders_items_supplier_id_foreign` (`supplier_id`),
+  ADD KEY `purchase_orders_items_product_id_foreign` (`product_id`),
+  ADD KEY `purchase_orders_items_unit_id_foreign` (`unit_id`);
 
 --
 -- Indexes for table `racks`
 --
 ALTER TABLE `racks`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `rack_whs_id` (`warehouse_id`);
-
---
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `role_menus`
+-- Indexes for table `shifts`
 --
-ALTER TABLE `role_menus`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `role_menu_role` (`role_id`),
-  ADD KEY `role_menu_id` (`menu_id`),
-  ADD KEY `role_menu_menu_item` (`item_id`);
+ALTER TABLE `shifts`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `suppliers`
@@ -754,24 +678,35 @@ ALTER TABLE `suppliers`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `trs_user_id` (`user_id`),
-  ADD KEY `trs_crm_id` (`customer_id`);
+  ADD KEY `transactions_user_id_foreign` (`user_id`),
+  ADD KEY `transactions_shift_id_foreign` (`shift_id`);
 
 --
 -- Indexes for table `transaction_items`
 --
 ALTER TABLE `transaction_items`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `trs_item_id` (`transaction_id`),
-  ADD KEY `trs_product_id` (`product_id`);
+  ADD KEY `transaction_items_transaction_id_foreign` (`transaction_id`);
+
+--
+-- Indexes for table `units`
+--
+ALTER TABLE `units`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user_shift_sessions`
+--
+ALTER TABLE `user_shift_sessions`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`username`),
-  ADD KEY `role_users` (`role_id`);
+  ADD KEY `user_shift_sessions_user_id_foreign` (`user_id`),
+  ADD KEY `user_shift_sessions_shift_id_foreign` (`shift_id`);
 
 --
 -- Indexes for table `warehouses`
@@ -780,257 +715,224 @@ ALTER TABLE `warehouses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `warehouse_racks`
+--
+ALTER TABLE `warehouse_racks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `warehouse_racks_warehouse_id_foreign` (`warehouse_id`),
+  ADD KEY `warehouse_racks_rack_id_foreign` (`rack_id`);
+
+--
+-- Indexes for table `warehouse_rack_products`
+--
+ALTER TABLE `warehouse_rack_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `warehouse_rack_products_purchase_order_id_foreign` (`purchase_order_item_id`),
+  ADD KEY `warehouse_rack_products_warehouse_id_foreign` (`warehouse_id`),
+  ADD KEY `warehouse_rack_products_rack_id_foreign` (`rack_id`),
+  ADD KEY `warehouse_rack_products_product_id_foreign` (`product_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `cashiers`
+--
+ALTER TABLE `cashiers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `opname`
+--
+ALTER TABLE `opname`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `menus`
+-- AUTO_INCREMENT for table `personal_access_tokens`
 --
-ALTER TABLE `menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `menu_items`
---
-ALTER TABLE `menu_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `product_stock_opnames`
+-- AUTO_INCREMENT for table `purchase_orders`
 --
-ALTER TABLE `product_stock_opnames`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `purchase_orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `product_stock_opname_rts_items`
+-- AUTO_INCREMENT for table `purchase_order_items`
 --
-ALTER TABLE `product_stock_opname_rts_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `product_stock_opname_warehouse_items`
---
-ALTER TABLE `product_stock_opname_warehouse_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `product_stock_pos`
---
-ALTER TABLE `product_stock_pos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `product_stock_ready_to_sales`
---
-ALTER TABLE `product_stock_ready_to_sales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `product_stock_transaction`
---
-ALTER TABLE `product_stock_transaction`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `puchase_orders`
---
-ALTER TABLE `puchase_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `puchase_order_histories`
---
-ALTER TABLE `puchase_order_histories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `puchase_order_items`
---
-ALTER TABLE `puchase_order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `purchase_order_items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `racks`
 --
 ALTER TABLE `racks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `roles`
+-- AUTO_INCREMENT for table `shifts`
 --
-ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `role_menus`
---
-ALTER TABLE `role_menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+ALTER TABLE `shifts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transaction_items`
 --
 ALTER TABLE `transaction_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `units`
+--
+ALTER TABLE `units`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `user_shift_sessions`
+--
+ALTER TABLE `user_shift_sessions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `warehouses`
 --
 ALTER TABLE `warehouses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `warehouse_racks`
+--
+ALTER TABLE `warehouse_racks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `warehouse_rack_products`
+--
+ALTER TABLE `warehouse_rack_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `menu_items`
+-- Constraints for table `cashiers`
 --
-ALTER TABLE `menu_items`
-  ADD CONSTRAINT `item_parent` FOREIGN KEY (`parent_id`) REFERENCES `menu_items` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `menu_items` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cashiers`
+  ADD CONSTRAINT `cashiers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `opname`
+--
+ALTER TABLE `opname`
+  ADD CONSTRAINT `opname_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `opname_rack` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `opname_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `opname_warehouse` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `product_categories` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `products_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `products_unit_id_foreign` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `product_stock_opnames`
+-- Constraints for table `purchase_orders`
 --
-ALTER TABLE `product_stock_opnames`
-  ADD CONSTRAINT `pso_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `purchase_orders`
+  ADD CONSTRAINT `purchase_orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `product_stock_opname_rts_items`
+-- Constraints for table `purchase_order_items`
 --
-ALTER TABLE `product_stock_opname_rts_items`
-  ADD CONSTRAINT `pso_rts_id` FOREIGN KEY (`product_stock_opname_id`) REFERENCES `product_stock_opnames` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pso_rts_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `product_stock_opname_warehouse_items`
---
-ALTER TABLE `product_stock_opname_warehouse_items`
-  ADD CONSTRAINT `pso_whs_id` FOREIGN KEY (`product_stock_opname_id`) REFERENCES `product_stock_opnames` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pso_whs_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pso_whs_rack_id` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pso_whs_whs_id` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `product_stock_pos`
---
-ALTER TABLE `product_stock_pos`
-  ADD CONSTRAINT `pspo_id` FOREIGN KEY (`puchase_order_id`) REFERENCES `puchase_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pspo_product_id` FOREIGN KEY (`product_id`) REFERENCES `puchase_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pspo_rack_id` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pspo_whs_id` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `product_stock_ready_to_sales`
---
-ALTER TABLE `product_stock_ready_to_sales`
-  ADD CONSTRAINT `rts_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rts_rack_id` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rts_whs_id` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `product_stock_transaction`
---
-ALTER TABLE `product_stock_transaction`
-  ADD CONSTRAINT `pst_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pst_trs_id` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `puchase_orders`
---
-ALTER TABLE `puchase_orders`
-  ADD CONSTRAINT `po_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `puchase_order_histories`
---
-ALTER TABLE `puchase_order_histories`
-  ADD CONSTRAINT `po_historis_po_id` FOREIGN KEY (`puchase_order_id`) REFERENCES `puchase_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `puchase_order_items`
---
-ALTER TABLE `puchase_order_items`
-  ADD CONSTRAINT `pos_item_id` FOREIGN KEY (`puchase_order_id`) REFERENCES `puchase_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pos_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pos_supplier_id` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `racks`
---
-ALTER TABLE `racks`
-  ADD CONSTRAINT `rack_whs_id` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `role_menus`
---
-ALTER TABLE `role_menus`
-  ADD CONSTRAINT `role_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `role_menu_menu_item` FOREIGN KEY (`item_id`) REFERENCES `menu_items` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `role_menu_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `purchase_order_items`
+  ADD CONSTRAINT `purchase_orders_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `purchase_orders_items_purchase_order_id_foreign` FOREIGN KEY (`purchase_order_id`) REFERENCES `purchase_orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `purchase_orders_items_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `purchase_orders_items_unit_id_foreign` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `trs_crm_id` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `trs_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `transactions_shift_id_foreign` FOREIGN KEY (`shift_id`) REFERENCES `shifts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `transactions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `transaction_items`
 --
 ALTER TABLE `transaction_items`
-  ADD CONSTRAINT `trs_item_id` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `trs_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `transaction_items_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `users`
+-- Constraints for table `user_shift_sessions`
 --
-ALTER TABLE `users`
-  ADD CONSTRAINT `role_users` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE `user_shift_sessions`
+  ADD CONSTRAINT `user_shift_sessions_shift_id_foreign` FOREIGN KEY (`shift_id`) REFERENCES `shifts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_shift_sessions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `warehouse_racks`
+--
+ALTER TABLE `warehouse_racks`
+  ADD CONSTRAINT `warehouse_racks_rack_id_foreign` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `warehouse_racks_warehouse_id_foreign` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `warehouse_rack_products`
+--
+ALTER TABLE `warehouse_rack_products`
+  ADD CONSTRAINT `warehouse_rack_products_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `warehouse_rack_products_purchase_order_id_foreign` FOREIGN KEY (`purchase_order_item_id`) REFERENCES `purchase_order_items` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `warehouse_rack_products_rack_id_foreign` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `warehouse_rack_products_warehouse_id_foreign` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

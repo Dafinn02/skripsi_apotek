@@ -67,10 +67,12 @@
     <div class="container-fluid">
       <div class="row mb-2 d-flex justify-content-end mr-auto">
         <div class="ml-auto">
+          @if(Auth::user()->role != 'head_office')
           <a style="cursor: pointer;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
+          @endif
         </div>
       </div>
       <div class="row">
@@ -96,12 +98,15 @@
                     <td>{{$key+1}}</td>
                     <td>{{$item->name}}</td>
                     <td>
+                      @if(Auth::user()->role != 'head_office')
                       <a style="color: black;" class="btn btn-danger btn-sm"
                          href="{{url('/master/gudang-rak/'.$item->id)}}">
                         Kelola Data Rack <i class="fas fa-warehouse"></i>
                       </a> 
+                      @endif
                     </td>
                     <td>
+                      @if(Auth::user()->role != 'head_office')
                       <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm" 
                          data-toggle="modal" data-target="#modal-edit-{{$item->id}}">
                         <i class="fas fa-edit"></i>
@@ -112,6 +117,7 @@
                          onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
                         <i class="fas fa-trash"></i>
                       </a>  
+                      @endif
                     </td>
                   </tr>
                 @endforeach
