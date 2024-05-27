@@ -37,23 +37,34 @@ class checkExpired extends Command
         foreach ($itemOnWareHouse as $key => $value) 
         {
             $kadal = Carbon::parse($value->kadaluarsa);
-            $check = $kadal->diffInDays($now);
-            if($check <= 5)
+            $now = Carbon::parse($now);
+            $check = $now->diffInDays($kadal);
+            
+            if($now > $kadal)
             {
-                $itemKadaluarsa++;
-                $dataKadal = DB::table('warehouse_rack_products as wrp')
-                             ->join('products as pd','pd.id','=','wrp.product_id')
-                             ->join('warehouses as whs','whs.id','=','wrp.warehouse_id')
-                             ->join('racks as rack','rack.id','=','wrp.rack_id')
-                             ->where('wrp.id',$value->id)
-                             ->select('pd.name as product_name'
-                                     ,'whs.name as warehouse_name'
-                                     ,'rack.name as rack_name'
-                                     ,'wrp.qty')
-                             ->first();
-                $dataKadal = json_decode(json_encode($dataKadal),true);
-                $dataKadal['kadaluarsa'] = $check;
-                $itemProdukKadaluarsa[$key] = $dataKadal;
+                $check = -1 * $check;
+            }
+
+            if(abs($check) >= 5)
+            {
+                if($check <= 5)
+                {
+                    $itemKadaluarsa++;
+                    $dataKadal = DB::table('warehouse_rack_products as wrp')
+                                ->join('products as pd','pd.id','=','wrp.product_id')
+                                ->join('warehouses as whs','whs.id','=','wrp.warehouse_id')
+                                ->join('racks as rack','rack.id','=','wrp.rack_id')
+                                ->where('wrp.id',$value->id)
+                                ->select('pd.name as product_name'
+                                        ,'whs.name as warehouse_name'
+                                        ,'rack.name as rack_name'
+                                        ,'pd.stock as qty')
+                                ->first();
+                    $dataKadal = json_decode(json_encode($dataKadal),true);
+                    $dataKadal['kadaluarsa'] = $check;
+                    $itemProdukKadaluarsa[$key] = $dataKadal;
+                }
+                
             }
         }
         if($itemKadaluarsa > 0)

@@ -156,15 +156,28 @@
                 <ul>
                   @if(count($itemProdukKadaluarsa) > 0)
                   @foreach($itemProdukKadaluarsa as $itemProdukKadaluarsaKey => $val)
+                  @if($val['kadaluarsa'] <= 5)
                     <li>
                       @if($val['kadaluarsa'] == 0)
-                        {{$val['qty']}} {{$val['product_name']}} yang ada di gudang {{$val['warehouse_name']}} rack {{$val['rack_name']}} sudah kadaluarsa mulai Hari ini
+                        {{$val['qty']}} 
+                        {{$val['product_name']}} yang ada di gudang 
+                        {{$val['warehouse_name']}} rack {{$val['rack_name']}} 
+                        <b style="color:blue;">sudah kadaluarsa</b> mulai Hari ini
                       @elseif($val['kadaluarsa'] > 0)
-                        {{$val['qty']}} {{$val['product_name']}} yang ada di gudang {{$val['warehouse_name']}} rack {{$val['rack_name']}} akan segera kadaluarsa dalam {{$val['kadaluarsa']}} Hari
+                        @if($val['kadaluarsa'] <= 5)
+                          {{$val['qty']}} {{$val['product_name']}} 
+                          yang ada di gudang {{$val['warehouse_name']}} 
+                          rack {{$val['rack_name']}} <b style="color:green;">akan segera kadaluarsa</b> dalam 
+                          {{$val['kadaluarsa']}} Hari
+                        @endif
                       @elseif($val['kadaluarsa'] < 0)
-                        {{$val['qty']}} {{$val['product_name']}} yang ada di gudang {{$val['warehouse_name']}} rack {{$val['rack_name']}} sudah kadaluarsa dalam {{$val['kadaluarsa']}} Hari yang lalu
+                        {{$val['qty']}} {{$val['product_name']}} 
+                        yang ada di gudang {{$val['warehouse_name']}} 
+                        rack {{$val['rack_name']}} <b style="color:red;">sudah kadaluarsa</b> 
+                        dalam {{abs($val['kadaluarsa'])}} Hari yang lalu
                       @endif
                     </li>
+                    @endif
                   @endforeach
                   @else
                   <li>

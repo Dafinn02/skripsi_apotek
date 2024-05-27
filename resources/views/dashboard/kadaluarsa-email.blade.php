@@ -165,19 +165,38 @@
                   <td align="center" bgcolor="#ffffff" style="padding: 12px;">
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
-                        <ul>
-                          @foreach($itemProdukKadaluarsa as $itemProdukKadaluarsaKey => $val)
-                            <li>
-                              @if($val['kadaluarsa'] == 0)
-                                {{$val['qty']}} {{$val['product_name']}} yang ada di gudang {{$val['warehouse_name']}} rack {{$val['rack_name']}} sudah kadaluarsa mulai Hari ini
-                              @elseif($val['kadaluarsa'] > 0)
-                                {{$val['qty']}} {{$val['product_name']}} yang ada di gudang {{$val['warehouse_name']}} rack {{$val['rack_name']}} akan segera kadaluarsa dalam {{$val['kadaluarsa']}} Hari
-                              @elseif($val['kadaluarsa'] < 0)
-                                {{$val['qty']}} {{$val['product_name']}} yang ada di gudang {{$val['warehouse_name']}} rack {{$val['rack_name']}} sudah kadaluarsa dalam {{$val['kadaluarsa']}} Hari yang lalu
-                              @endif
-                            </li>
-                          @endforeach
-                        </ul>
+                      <ul>
+                  @if(count($itemProdukKadaluarsa) > 0)
+                    @foreach($itemProdukKadaluarsa as $itemProdukKadaluarsaKey => $val)
+                    @if($val['kadaluarsa'] <= 5)
+                      <li>
+                        @if($val['kadaluarsa'] == 0)
+                          {{$val['qty']}} 
+                          {{$val['product_name']}} yang ada di gudang 
+                          {{$val['warehouse_name']}} rack {{$val['rack_name']}} 
+                          <b style="color:blue;">sudah kadaluarsa</b> mulai Hari ini
+                        @elseif($val['kadaluarsa'] > 0)
+                          @if($val['kadaluarsa'] <= 5)
+                            {{$val['qty']}} {{$val['product_name']}} 
+                            yang ada di gudang {{$val['warehouse_name']}} 
+                            rack {{$val['rack_name']}} <b style="color:green;">akan segera kadaluarsa</b> dalam 
+                            {{$val['kadaluarsa']}} Hari
+                          @endif
+                        @elseif($val['kadaluarsa'] < 0)
+                          {{$val['qty']}} {{$val['product_name']}} 
+                          yang ada di gudang {{$val['warehouse_name']}} 
+                          rack {{$val['rack_name']}} <b style="color:red;">sudah kadaluarsa</b> 
+                          dalam {{abs($val['kadaluarsa'])}} Hari yang lalu
+                        @endif
+                      </li>
+                      @endif
+                    @endforeach
+                  @else
+                  <li>
+                    Belum ada informasi obat yang mendekati kadaluarsa
+                  </li>
+                  @endif
+                </ul>
                       </tr>
                     </table>
                   </td>
