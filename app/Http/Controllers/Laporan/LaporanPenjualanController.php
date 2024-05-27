@@ -63,14 +63,15 @@ class LaporanPenjualanController extends Controller
     		$get->where('trs.date',$request->end_date);
     	}
 
-    	$get->select('trsi.*','us.name as pic');
+    	$get->select('trsi.*','us.name as pic','trs.id as transaction_id');
         $get->orderBy('trsi.created_at','DESC');
     	$data = $get->get();
+        $total = $get->sum('trs.grandtotal');
     	$data = json_decode(json_encode($data),true);
     	Session::put('laporan_penjualan',$data);
     	$user = DB::table('users')->where('role','!=','head_office')->get();
     	$shift = DB::table('shifts')->get();
-    	return view('dashboard.laporan.penjualan.index',compact('data','user','shift','request'));
+    	return view('dashboard.laporan.penjualan.index',compact('data','user','shift','request','total'));
     }
 
     public function export()

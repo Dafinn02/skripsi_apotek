@@ -68,12 +68,12 @@
       <div class="row mb-2">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="background-color:#1166d8;">
               <form action="{{url('laporan/report_pembelian')}}" id="form-option">
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Produk</label>
+                    <label style="color: white">Cari Berdasarkan Produk</label>
                     <select class="form-control" name="produk">
                        <option value="" selected disabled>Pilih Produk</option>
                        <option value="">All</option>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Supplier</label>
+                    <label style="color: white">Cari Berdasarkan Supplier</label>
                     <select class="form-control" name="supplier">
                        <option value="" selected disabled>Pilih Supplier</option>
                        <option value="">All</option>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                   <label>Cari Berdasarkan Metode Pembayaran</label>
+                   <label style="color: white">Cari Berdasarkan Metode Pembayaran</label>
                     <select class="form-control" name="payment">
                        <option value="" selected disabled>Pilih Metode Pembayaran</option>
                        <option value="">All</option>
@@ -115,7 +115,7 @@
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan User Yang Menangani</label>
+                    <label style="color: white">Cari Berdasarkan User Yang Menangani</label>
                      <select class="form-control" name="user">
                        <option value="" selected disabled>Pilih User</option>
                        <option value="">All</option>
@@ -129,7 +129,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Gudang</label>
+                    <label style="color: white">Cari Berdasarkan Gudang</label>
                     <select class="form-control" name="warehouse">
                        <option value="" selected disabled>Pilih Gudang</option>
                        <option value="">All</option>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Rak</label>
+                    <label style="color: white">Cari Berdasarkan Rak</label>
                     <select class="form-control" name="rack">
                        <option value="" selected disabled>Pilih Rak</option>
                        <option value="">All</option>
@@ -160,7 +160,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Tanggal Start</label>
+                    <label style="color: white">Tanggal Start</label>
                     <div class="input-group">
                       <input type="date" name="start_date" class="form-control" placeholder="Cari data..." value="{{$request->start_date}}">
                     </div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Tanggal End</label>
+                    <label style="color: white">Tanggal End</label>
                     <div class="input-group">
                       <input type="date" name="end_date" class="form-control" placeholder="Cari data..." value="{{$request->end_date}}">
                     </div>
@@ -176,7 +176,7 @@
                 </div>
               </div>
               <div class="col-md-12" align="right">
-                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Filter</button>
+                <button class="btn btn-success" type="submit"><i class="fas fa-search"></i> Filter</button>
               </div>
               </form>
             </div>
@@ -185,7 +185,7 @@
       </div>
         <div class="row mb-2 d-flex justify-content-end mr-auto">
         <div class="ml-auto">
-          <a href="{{url('laporan/report_pembelian/export')}}" target="_blank" type="button" class="btn btn-primary">
+          <a href="{{url('laporan/report_pembelian/export')}}" target="_blank" type="button" class="btn btn-success">
             <i class="fas fa-download"></i>
             Export
           </a>
@@ -196,7 +196,14 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Daftar data laporan pembelian</h3>
+              <div class="row">
+                  <div class="col-md-6" align="left">
+                     <h3 class="card-title">Daftar data laporan pembelian</h3>
+                  </div>
+                   <div class="col-md-6" align="right">
+                    Total Pengeluaran : <b>Rp {{number_format($total, 0, ",", ".")}}</b>
+                  </div>
+                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">

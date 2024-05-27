@@ -27,16 +27,37 @@
       theme: 'bootstrap4'
     })
   });
+   @if($message=Session::get('success'))
+        // window.open(
+        //   "{{url('penjualan/kasir-cetak/')}}"+"/"+"{{Session::get('trs-id')}}",
+        //   //"_blank" // <- This is what makes it open in a new window.
+        // );
+        window.open("{{url('penjualan/kasir-cetak/')}}"+"/"+"{{Session::get('trs-id')}}", '_blank', 'location=yes,height=570,width=620,scrollbars=yes,status=yes');
+    @endif
 </script>
 
 <script>
+  var productCount = 0;
+   function checkProductCount() {
+            if(productCount <= 0) 
+            {
+              $('#btn_jual').hide()
+            }
+    }
+    window.onload = checkProductCount;
   // JavaScript
-  var productCount = 1;
+  var productCount = 0;
 
   function removeProductOne(id)
   {
     $('#'+id).remove();
     productCount--;
+    if(productCount <= 0) 
+    {
+      $('#btn_jual').hide();
+    }else{
+      $('#btn_jual').show();
+    }
   }
   function addProductOne()
   {
@@ -88,6 +109,10 @@
                 </div>
               </div>`;
     $('#products').append(item);
+    if(productCount > 0) 
+    {
+      $('#btn_jual').show();
+    }
   }
 
   
@@ -147,6 +172,18 @@ function hanyaAngka(evt) {
         return false;
       return true;
     }
+
+function formatCurrency(input) {
+    var numeric = input.value.replace(/\D/g, '');
+    var formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    input.value = formatted;
+}
+
+document.querySelectorAll('input.nominal').forEach(function(input) {
+    input.addEventListener('input', function (e) {
+        formatCurrency(e.target);
+    });
+});
 </script>
 @endsection
 
@@ -195,7 +232,7 @@ function hanyaAngka(evt) {
                         <div class="col-md-4">
                           <div class="form-group">
                             <label for="customer_phone">No. Handphone </label>
-                            <input type="text" id="customer_phone" name="customer_phone" class="form-control" placeholder="Contoh :: 085608014xxx" onkeypress="return hanyaAngka(event)">
+                            <input type="text" id="customer_phone" name="customer_phone" class="form-control" placeholder="Contoh : 085608014xxx" onkeypress="return hanyaAngka(event)">
                           </div>    
                         </div>
                         <div class="col-md-4">
@@ -207,25 +244,25 @@ function hanyaAngka(evt) {
                         <div class="col-md-4">
                           <div class="form-group">
                               <label for="service_cost">Biaya Layanan</label>
-                              <input type="text" id="service_cost" name="service_cost" class="form-control" placeholder="Contoh : 6000"  onkeypress="return hanyaAngka(event)">
+                              <input type="text" id="service_cost" name="service_cost" class="form-control nominal" placeholder="Contoh : 6000"  onkeypress="return hanyaAngka(event)">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                               <label for="emblase_cost">Biaya Emblase/Tabung</label>
-                              <input type="text" id="emblase_cost" name="emblase_cost" class="form-control" placeholder="Contoh : 5000"  onkeypress="return hanyaAngka(event)">
+                              <input type="text" id="emblase_cost" name="emblase_cost" class="form-control nominal" placeholder="Contoh : 5000"  onkeypress="return hanyaAngka(event)">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                               <label for="shipping_cost">Biaya Pengiriman</label>
-                              <input type="text" id="shipping_cost" name="shipping_cost" class="form-control" placeholder="Contoh : 7000" onkeypress="return hanyaAngka(event)">
+                              <input type="text" id="shipping_cost" name="shipping_cost" class="form-control nominal" placeholder="Contoh : 7000" onkeypress="return hanyaAngka(event)">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                               <label for="lainnya">Biaya Lainnya</label>
-                              <input type="text" id="lainnya" name="lainnya" class="form-control" placeholder="Contoh : 9000"
+                              <input type="text" id="lainnya" name="lainnya" class="form-control nominal" placeholder="Contoh : 9000"
                                      onkeypress="return hanyaAngka(event)">
                           </div>
                         </div>
@@ -243,14 +280,14 @@ function hanyaAngka(evt) {
                         <div class="col-md-4">
                           <div class="form-group">
                               <label for="discount">Diskon</label>
-                              <input type="text" id="discount" name="discount" class="form-control" placeholder="Contoh : 6000" 
+                              <input type="text" id="discount" name="discount" class="form-control nominal" placeholder="Contoh : 6000" 
                                      onkeypress="return hanyaAngka(event)">
                           </div>
                         </div>
                     </div>
 
                     <div id="products">
-                      <div class="product" id="product-item-1">
+                      <div class="product">
                         <hr>
                         <div class="product-header" align="center">
                           <button type="button" class="btn btn-success" id="addProduct" onclick="addProductOne()"> 
@@ -258,7 +295,7 @@ function hanyaAngka(evt) {
                         </button>
                         </div>
                         <hr>
-                        <div class="mt-3">
+                        {{-- <div class="mt-3">
                           <div class="row">
                             <div class="col-md-3">
                               <div class="form-group">
@@ -283,7 +320,7 @@ function hanyaAngka(evt) {
                             <div class="col-md-3">
                               <div class="form-group">
                                   <label for="product_price">Harga Produk <span style="color: red">*</span></label>
-                                  <input type="text" onkeypress="return hanyaAngka(event)" required id="product_price" name="product_price[]" class="form-control" required>
+                                  <input type="text" onkeypress="return hanyaAngka(event)" required id="product_price" name="product_price[]" class="form-control nominal" required>
                               </div>
                             </div>
                             <div class="col-md-3">
@@ -293,7 +330,7 @@ function hanyaAngka(evt) {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> --}}
                       </div>
                     </div>
                   </div>
@@ -302,7 +339,9 @@ function hanyaAngka(evt) {
                   <a href="{{ url('/penjualan/kasir-beli') }}" class="btn btn-warning">Batal</a>
                   &nbsp;&nbsp;
                   @if(Auth::user()->role != 'head_office')
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary" id="btn_jual">
+                      Simpan
+                    </button>
                   @endif
                 </div>
 

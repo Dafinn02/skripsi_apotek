@@ -73,7 +73,7 @@
             Kembali Ke List Gudang
           </a>
           @if(Auth::user()->role != 'head_office')
-          <a style="cursor: pointer;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
+          <a style="cursor: pointer;" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
@@ -103,15 +103,17 @@
                     <td>{{$item->name}}</td>
                     <td>
                       @if(Auth::user()->role != 'head_office')
-                      <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm" 
+                      <a class="btn btn-info btn-sm" 
                          data-toggle="modal" data-target="#modal-edit-{{$item->wr_id}}">
-                        <i class="fas fa-edit"></i>
+                         <i class="fas fa-pencil-alt">
+                        </i>
+                        Edit
                       </a>
                       &nbsp;
-                      <a style="color: black;" class="btn btn-danger btn-sm"
-                         href="{{url('/master/gudang-rak/delete/'.$item->wr_id)}}" 
-                         onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
+                      <a class="btn btn-danger btn-sm ondelete"
+                         href="{{url('/master/gudang-rak/delete/'.$item->wr_id)}}">
                         <i class="fas fa-trash"></i>
+                        Delete
                       </a> 
                       @endif 
                     </td>

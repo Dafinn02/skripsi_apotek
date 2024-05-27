@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('qty');
             $table->enum('type',['addition','subtraction']);
             $table->date('date');
+            $table->text('info')->nullable();
             $table->timestamps();
         });
     }

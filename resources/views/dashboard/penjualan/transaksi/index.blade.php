@@ -28,14 +28,20 @@
        "lengthChange": true,
        "searching": true,
        "ordering": true,
-       "info": true,
+       //  "info": true,
        "autoWidth": false,
-       "responsive": true,
+       "scrollX": true,
+      //  "responsive": true,
      });
    });
    function optionForm(id) {
      document.getElementById(id).submit();
      return false;
+   }
+
+   function printYa(id)
+   {
+    window.open("{{url('penjualan/kasir-cetak/')}}"+"/"+id, '_blank', 'location=yes,height=570,width=620,scrollbars=yes,status=yes');
    }
 </script>
 @endsection
@@ -61,47 +67,51 @@
    </section>
    <!-- Main content -->
    <section class="content">
-      <div class="container-fluid"> 
+      <div class="container-fluid">
          <div class="row">
             <div class="col-12">
                <div class="card">
                   <div class="card-header row">
-                    <div class="col-md-4">
-                       <h3  class="card-title">
-                      <b>Tanggal</b> : 
-                      <b style="color: red">
-                        {{ \Carbon\Carbon::make($now)->format('d F Y')}}
-                      </b>
-                      </h3>
-                    </div>
-                    <div class="col-md-4" style="opacity:  {{Auth::user()->role != 'cashier' ? '0' : ''}};">
-                      @if($shift_id == 0)
-                      <a href="{{url('penjualan/transaksi')}}?session_trs_shift=true" 
-                         class="btn btn-{{$shift_id == 0 ? 'warning' : 'success'}}" >
-                        <i class="fas fa-user"></i> &nbsp;
-                        Tampilkan Transaksi Yang Ditangani Oleh Saya
-                      </a>
-                      @else
-                      <a href="{{url('penjualan/transaksi')}}" 
-                         class="btn btn-{{$shift_id == 0 ? 'warning' : 'success'}}" >
-                        <i class="fas fa-user"></i> &nbsp;
-                        Tampilkan Semua Transaksi
-                      </a>
-                      @endif
-                    </div>
-                    <div class="col-md-4" align="right">
-                      <h3  class="card-title" style="float: right;">
-                      <b>Total</b> : 
-                      <b style="color: red">
-                        {{count($data)}} Transaksi
-                      </b>
-                      </h3>
-                    </div>
-                      
+                     <div class="col-md-4">
+                        <h3 class="card-title">
+                           @if($request->transaction_id == null)
+                           <b>Tanggal</b> :
+                           <b style="color: red">
+                              {{ \Carbon\Carbon::make($now)->format('d F Y')}}
+                           </b>
+                           @endif
+                        </h3>
+                     </div>
+                     <div class="col-md-4" style="opacity:  {{Auth::user()->role != 'cashier' ? '0' : ''}};">
+                        @if($shift_id == 0)
+                        <a href="{{url('penjualan/transaksi')}}?session_trs_shift=true"
+                           class="btn btn-{{$shift_id == 0 ? 'warning' : 'success'}}">
+                           <i class="fas fa-user"></i> &nbsp;
+                           Tampilkan Transaksi Yang Ditangani Oleh Saya
+                        </a>
+                        @else
+                        <a href="{{url('penjualan/transaksi')}}"
+                           class="btn btn-{{$shift_id == 0 ? 'warning' : 'success'}}">
+                           <i class="fas fa-user"></i> &nbsp;
+                           Tampilkan Semua Transaksi
+                        </a>
+                        @endif
+                     </div>
+                     <div class="col-md-4" align="right">
+                        <h3 class="card-title" style="float: right;">
+                           @if($request->transaction_id == null)
+                           <b>Total</b> :
+                           <b style="color: red">
+                              {{count($data)}} Transaksi
+                           </b>
+                           @endif
+                        </h3>
+                     </div>
+
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-                     <table id="example2" class="table table-bordered table-hover">
+                     <table id="example2" class="table table-striped">
                         <thead>
                            <tr>
                               <th>Data Pembeli</th>
@@ -110,58 +120,33 @@
                         </thead>
                         @foreach($data as $key => $item)
                         <tr>
-                           <td style="line-height: 2">
+                           <td style="line-height: 1.5">
                               <table>
                                  <tr>
                                     <th>ID Transaksi</th>
-                                    <th>:</th>
-                                    <td>{{$item['id']}}</td>
-                                 </tr>
-                                 <tr>
                                     <th>Kasir</th>
-                                    <th>:</th>
-                                    <td><?php echo $item['kasir']?></td>
-                                 </tr>
-                                 <tr>
                                     <th>Nama Pembeli</th>
-                                    <th>:</th>
-                                    <td>{{$item['customer_name']}}</td>
-                                 </tr>
-                                 <tr>
                                     <th>No. Handphone</th>
-                                    <th>:</th>
-                                    <td>{{$item['customer_phone']}}</td>
-                                 </tr>
-                                 <tr>
                                     <th>Tanggal</th>
-                                    <th>:</th>
-                                    <td>
-                                       {{ \Carbon\Carbon::make($item['created_at'])->format('d F Y H:i:s')}}
-                                    </td>
-                                 </tr>
-                                 <tr>
                                     <th>Biaya Layanan</th>
-                                    <th>:</th>
-                                    <td>Rp {{number_format($item['service_cost'], 0, ",", ".")}}</td>
-                                 </tr>
-                                 <tr>
                                     <th>Biaya Emblase/Tabung</th>
-                                    <th>:</th>
-                                    <td>Rp {{number_format($item['emblase_cost'], 0, ",", ".")}}</td>
-                                 </tr>
-                                 <tr>
                                     <th>Biaya Pengiriman</th>
-                                    <th>:</th>
-                                    <td>Rp {{number_format($item['shipping_cost'], 0, ",", ".")}}</td>
-                                 </tr>
-                                 <tr>
                                     <th>Biaya Lainnya</th>
-                                    <th>:</th>
-                                    <td>Rp {{number_format($item['lainnya'], 0, ",", ".")}}</td>
+                                    <th>Tipe Diskon</th>
+                                    <th>Diskon</th>
+                                    <th>Grand Total</th>
+                                    <th>Action</th>
                                  </tr>
                                  <tr>
-                                    <th>Tipe Diskon</th>
-                                    <th>:</th>
+                                    <td>{{$item['id']}}&nbsp;&nbsp;</td>
+                                    <td><?php echo $item['kasir']?></td>
+                                    <td>{{$item['customer_name']}}</td>
+                                    <td>{{$item['customer_phone']}}</td>
+                                    <td>{{ \Carbon\Carbon::make($item['created_at'])->format('d F Y H:i:s')}}</td>
+                                    <td>Rp {{number_format($item['service_cost'], 0, ",", ".")}}</td>
+                                    <td>Rp {{number_format($item['emblase_cost'], 0, ",", ".")}}</td>
+                                    <td>Rp {{number_format($item['shipping_cost'], 0, ",", ".")}}</td>
+                                    <td>Rp {{number_format($item['lainnya'], 0, ",", ".")}}</td>
                                     @if($item['discount_type'] == 'fix_price')
                                     <td>Harga Tetap</td>
                                     @elseif($item['discount_type'] == 'percentage')
@@ -169,61 +154,38 @@
                                     @else
                                     <td>-</td>
                                     @endif
-                                 </tr>
-                                 <tr>
-                                    <th>Diskon</th>
-                                    <th>:</th>
                                     <td>Rp {{number_format($item['discount'], 0, ",", ".")}}</td>
-                                 </tr>
-                                 <tr>
-                                    <th>Grand Total</th>
-                                    <th>:</th>
                                     <td>Rp {{number_format($item['grandtotal'], 0, ",", ".")}}</td>
+                                    <td>
+                                       <a class="btn btn-sm btn-app  bg-info" style="cursor: pointer;" onclick="printYa(<?php echo $item['id']?>)">
+                                       <i class="fas fa-print"></i> &nbsp; Cetak
+                                    </a>
+                                    </td>
                                  </tr>
                               </table>
                            </td>
-                           <td style="line-height: 2">
-                              <div class="col-sm-12">
-                                 <div class="row">
-                                    @foreach($item['item'] as $keyItem => $product)
-                                    @php $subtotal = $product['product_price'] * $product['qty'] @endphp
-                                    <div class="col-sm-6" style="padding-bottom: 2%">
-                                       <table>
-                                          <tr>
-                                             <th><b style="color: red">Item Ke</b></th>
-                                             <th>:</th>
-                                             <td>{{$keyItem + 1}}</td>
-                                          </tr>
-                                          <tr>
-                                             <th>Produk</th>
-                                             <th>:</th>
-                                             <td>{{$product['product_name']}}</td>
-                                          </tr>
-                                          <tr>
-                                             <th>Kode Produk</th>
-                                             <th>:</th>
-                                             <td>{{$product['product_code']}}</td>
-                                          </tr>
-                                          <tr>
-                                             <th>Harga Produk</th>
-                                             <th>:</th>
-                                             <td>{{$product['product_price']}}</td>
-                                          </tr>
-                                          <tr>
-                                             <th>Qty</th>
-                                             <th>:</th>
-                                             <td>{{$product['qty']}}</td>
-                                          </tr>
-                                          <tr>
-                                             <th>Sub Total</th>
-                                             <th>:</th>
-                                             <td>Rp {{number_format($subtotal, 0, ",", ".")}}</td>
-                                          </tr>
-                                       </table>
-                                    </div>
-                                    @endforeach
-                                 </div>
-                              </div>
+                           <td style="line-height: 1.5">
+                              @foreach($item['item'] as $keyItem => $product)
+                              @php $subtotal = $product['product_price'] * $product['qty'] @endphp
+                              <table>
+                                 <tr>
+                                    <th><b style="color: red">Item Ke</b></th>
+                                    <th>Produk</th>
+                                    <th>Kode Produk</th>
+                                    <th>Harga Produk</th>
+                                    <th>Qty</th>
+                                    <th>Sub Total</th>
+                                 </tr>
+                                 <tr>
+                                    <td>{{$keyItem + 1}}</td>
+                                    <td>{{$product['product_name']}}</td>
+                                    <td>{{$product['product_code']}}</td>
+                                    <td>{{$product['product_price']}}</td>
+                                    <td>{{$product['qty']}}</td>
+                                    <td>Rp {{number_format($subtotal, 0, ",", ".")}}</td>
+                                 </tr>
+                              </table>
+                              @endforeach
                            </td>
                         </tr>
                         @endforeach

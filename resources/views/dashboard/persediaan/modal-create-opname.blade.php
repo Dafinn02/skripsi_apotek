@@ -13,11 +13,15 @@
                 <div class="row">
                   <div class="col-md-6">
                     <label>Tipe</label>
-                    <select class="form-control" name="type" required>
+                    <select id="type-opname" class="form-control" name="type" required>
                       <option value="" disabled selected>Pilih Tipe</option>
                       <option value="addition">Penambahan</option>
                       <option value="subtraction">Pengurangan</option>
                     </select>
+                    <div id="kadaluarsa">
+                      <input type="checkbox" name="kadaluarsa" class="checkvalue" value="1">
+                      <label for="kadaluarsa">kadaluarsa</label><br>
+                    </div>
                   </div>
                    <div class="col-md-6">
                     <label>Produk</label>
@@ -52,6 +56,12 @@
                   <div class="col-md-4">
                     <label>Kuantiti</label>
                    <input type="text" name="qty" class="form-control" placeholder="Contoh : 10" required onkeypress="return hanyaAngka(event)">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label>Informasi</label>
+                    <textarea class="form-control" placeholder="Contoh : Kadaluarsa, Produk telat masuk" name="info" required rows="5"></textarea>
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">

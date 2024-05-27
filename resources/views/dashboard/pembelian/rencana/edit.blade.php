@@ -30,8 +30,8 @@
 </script>
 
 <script>
-  updateRemoveButtons();
-  var productCount = {{$item->count()}} + 1; // Mengatur jumlah produk berdasarkan jumlah produk yang ada ditambah satu
+ // updateRemoveButtons();
+  var productCount =  {{$item->count()+1}} ; // Mengatur jumlah produk berdasarkan jumlah produk yang ada ditambah satu
 
   function removeProductOne(id)
   {
@@ -55,8 +55,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="supplier_id">Supplier</label>
-                                  <select name="supplier_id[]" id="supplier" class="form-control">
-                                      <option selected disabled>Pilih Supplier</option>
+                                  <select name="supplier_id[]" id="supplier" class="form-control" required>
+                                      <option selected disabled value="">Pilih Supplier</option>
                                       @foreach($suppliers as $supplier)
                                       <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                       @endforeach
@@ -81,8 +81,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="product_id">Produk</label>
-                                  <select name="product_id[]" class="form-control">
-                                      <option selected disabled>Pilih Produk</option>
+                                  <select name="product_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Produk</option>
                                       @foreach($product as $produk)
                                       <option value="{{ $produk->id }}">{{ $produk->name }}</option>
                                       @endforeach
@@ -92,8 +92,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="unit_id">Unit</label>
-                                  <select name="unit_id[]" class="form-control">
-                                      <option selected disabled>Pilih Unit</option>
+                                  <select name="unit_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Unit</option>
                                       @foreach($units as $unit)
                                       <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                       @endforeach
@@ -103,14 +103,41 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="unit_id">Harga Satuan</label>
-                                  <input type="number" name="price[]" class="form-control" required>
+                                  <input type="text" name="price[]" class="form-control nominal" onkeypress="return hanyaAngka(event)" required>
                               </div>
                             </div>
                           </div>
                         </div>
                 </div>`;
     $('#products').append(item);
+
+    var newPriceInput = $(`#product-item-${productCount} input[name='price[]']`);
+    newPriceInput.on('input', function (e) {
+        formatCurrency(e.target);
+    });
   }
+
+function hanyaAngka(evt) {
+  var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+    return false;
+    formatCurrency(evt.target);
+  return true;
+}
+
+function formatCurrency(input) {
+  var numeric = input.value.replace(/\D/g, '');
+  var formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  input.value = formatted;
+}
+
+document.querySelectorAll('input.nominal').forEach(function(input) {
+  //console.log(input);
+  input.addEventListener('input', function (e) {
+      formatCurrency(e.target);
+  });
+});
 </script>
 @endsection
 
@@ -192,7 +219,7 @@
                     <div id="products">
                     @foreach($item as $key => $it)
                       
-                        <div class="product">
+                        <div class="product" id="product-item-{{$key}}">
                           <hr>
                           <div class="product-header" align="center">
                             @if($key > 0)
@@ -212,8 +239,8 @@
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="supplier_id">Supplier</label>
-                                  <select name="supplier_id[]" id="supplier" class="form-control">
-                                      <option selected disabled>Pilih Supplier</option>
+                                  <select name="supplier_id[]" id="supplier" class="form-control" required>
+                                      <option selected disabled value="">Pilih Supplier</option>
                                       @foreach($suppliers as $sKey => $sItem)
                                         <option value="{{$sItem->id}}" {{$sItem->id == $it->supplier_id ? 'selected':''}}>
                                           {{$sItem->name}}
@@ -240,8 +267,8 @@
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="product_id">Produk</label>
-                                    <select name="product_id[]" class="form-control">
-                                        <option selected disabled>Pilih Produk</option>
+                                    <select name="product_id[]" class="form-control" required>
+                                        <option selected disabled value="">Pilih Produk</option>
                                         @foreach($product as $pKey => $pItem)
                                           <option value="{{$pItem->id}}" {{$pItem->id == $it->product_id ? 'selected':''}}>
                                             {{$pItem->name}}
@@ -253,8 +280,8 @@
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <label for="unit_id">Unit</label>
-                                  <select name="unit_id[]" class="form-control">
-                                      <option selected disabled>Pilih Unit</option>
+                                  <select name="unit_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Unit</option>
                                       @foreach($units as $ukey => $uItem)
                                       <option value="{{$uItem->id}}" {{$uItem->id == $it->unit_id ? 'selected':''}}>
                                         {{$uItem->name}}
@@ -266,7 +293,9 @@
                               <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="unit_id">Harga Satuan</label>
-                                    <input type="number" name="price[]" class="form-control" value="{{$it->price}}" required>
+                                    <input type="text" name="price[]" class="form-control nominal" 
+                                    onkeypress="return hanyaAngka(event)" value="{{ number_format($it->price, 0, ",", ".") }}" 
+                                    required>
                                 </div>
                               </div>
                             </div>

@@ -13,6 +13,7 @@
 
 <div class="wrapper">
   @php $role = Auth::user()->role @endphp
+  @php $foto = Auth::user()->foto @endphp
   <!-- Navbar -->
   @include('layouts.wrapper.navbar')
   <!-- /.navbar -->

@@ -61,12 +61,51 @@ class HomeController extends Controller
             //dd(Session::get('shift-session-cash-end'));
             return redirect('penjualan/transaksi');
         }
+
+        $now = Carbon::now('Asia/Jakarta')->format('Y-m-d');
         $produk = DB::table('products')->count();
         $penjualan = DB::table('transactions')->count();
         $pembelian = DB::table('purchase_orders')->count();
-        $pelanggan = DB::table('transactions')->groupBy('customer_name','customer_phone')->count();
+        $pelanggan = DB::table('transactions')->select('customer_name')->groupBy('customer_name')->get();
+        $jumlah_pelanggan = $pelanggan->count();
         $supplier = DB::table('suppliers')->count();
-        return view('dashboard.dashboard',compact('produk','penjualan','pembelian','pelanggan','supplier'));
+        $itemOnWareHouse = DB::table('warehouse_rack_products')
+                            ->select('kadaluarsa','id')
+                            ->get();
+        $itemKadaluarsa = 0;
+        $itemProdukKadaluarsa = [];
+        foreach ($itemOnWareHouse as $key => $value) 
+        {
+            $kadal = Carbon::parse($value->kadaluarsa);
+            $check = $kadal->diffInDays($now);
+            if($check <= 5)
+            {
+                $itemKadaluarsa++;
+                $dataKadal = DB::table('warehouse_rack_products as wrp')
+                             ->join('products as pd','pd.id','=','wrp.product_id')
+                             ->join('warehouses as whs','whs.id','=','wrp.warehouse_id')
+                             ->join('racks as rack','rack.id','=','wrp.rack_id')
+                             ->where('wrp.id',$value->id)
+                             ->select('pd.name as product_name'
+                                     ,'whs.name as warehouse_name'
+                                     ,'rack.name as rack_name'
+                                     ,'wrp.qty')
+                             ->first();
+                $dataKadal = json_decode(json_encode($dataKadal),true);
+                $dataKadal['kadaluarsa'] = $check;
+                $itemProdukKadaluarsa[$key] = $dataKadal;
+            }
+        }
+        $user = DB::table('users')->where('email','!=',null)->first();
+        $email = null;
+        if($user)
+        {
+            $email = $user->email;
+        }
+        //dd($itemProdukKadaluarsa);
+        return view('dashboard.dashboard',
+               compact('produk','penjualan','pembelian','jumlah_pelanggan','supplier'
+                      ,'itemKadaluarsa','itemProdukKadaluarsa','email'));
     }
 
     public function startShift()
@@ -131,7 +170,7 @@ class HomeController extends Controller
     {
         $userId = Auth::user()->id;
         $shiftId = $request->shift_id;
-        $cash_in_hand = $request->cash_in_hand;
+        $cash_in_hand = intval(str_replace('.','',$request->cash_in_hand));
         $open = $request->open;
         $dateNow = Carbon::now('Asia/Jakarta')->format('Y-m-d');
         $createdAt = Carbon::now('Asia/Jakarta')->format('Y-m-d h:i:s');
@@ -161,7 +200,7 @@ class HomeController extends Controller
     public function closeShift(Request $request)
     {
         $end = $request->close;
-        $end_cash = $request->end_cash;
+        $end_cash = intval(str_replace('.','',$request->end_cash));
         $dateNow = Carbon::now('Asia/Jakarta')->format('Y-m-d');
         $updatedAt = Carbon::now('Asia/Jakarta')->format('Y-m-d h:i:s');
         $userSessionShiftId = Session::get('shift-session-id');

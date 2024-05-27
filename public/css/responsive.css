@@ -1,0 +1,112 @@
+/*
+   Enros Responsive Design
+*/
+
+@media (max-width: 1024px) {
+    .hero-section{
+        height: 650px;
+    }
+}
+
+/* ---- Start of max-width 992px CSS ---- */
+@media (max-width: 992px) {
+    .sm-padding{ padding: 15px; }
+    .pd-top-none{ padding-top: 0!important; }
+    .navbar-brand{
+        padding: 17px 0;
+    }
+    .arrows,
+    .menu-btn,
+    .menu-wrap ul.nav{
+        display: none;
+    }
+    .slicknav_menu {
+        display:block;
+    }
+    .hero-section {
+        height: 580px;
+    }
+    h1 {
+        font-size: 36px;
+        line-height: 42px;
+    }
+
+}
+/* ---- End of max-width 992px CSS ---- */
+
+
+/* ---- Start of min-width 480px and max-width 768px CSS ---- */
+@media all and (min-width: 480px) and (max-width: 768px) {
+	
+}
+/* ---- End of min-width 480px and max-width 768px CSS ---- */
+
+
+/* ---- Start of max-width 767px CSS ---- */
+@media all and (max-width: 767px) {
+    body, p{
+        font-size: 13px;
+        line-height: 24px;
+    }
+    h1{
+        font-size: 30px!important;
+    }
+    h2{
+        font-size: 24px;
+        line-height: 36px;
+    }
+    h3{
+        font-size: 18px;
+    }
+    p br{
+        display: none;
+    }
+    .padding{
+        padding: 60px 0;
+    }
+    .pd-bottom {
+        padding-bottom: 60px;
+    }
+    .xs-padding{
+    	padding: 15px;
+    }
+    .hero-section{
+        height: auto;
+        padding: 100px 0 60px;
+    }
+    .hero-content h1{
+        line-height: 35px;
+    }
+    .widget-content.mid-content{
+        padding-left: 0;
+    }
+    
+}
+/* ---- End of max-width 767px CSS ---- */
+
+
+/* ---- Start of max-width 520px CSS ---- */
+@media all and (max-width: 520px) {
+    .subscribe-form{ width: 100%; }
+    .download-content h2{
+        font-size: 20px;
+    }
+    .social-link li{
+        margin: 0;
+    }
+}
+/* ---- End of max-width 520px CSS ---- */
+
+
+/* ---- Start of max-width 420px CSS ---- */
+@media all and (max-width: 420px) {
+    
+}
+/* ---- End of max-width 420px CSS ---- */
+
+
+/* ---- Start of max-width 380px CSS ---- */
+@media all and (max-width: 380px) {
+	
+}
+/* ---- End of max-width 380px CSS ---- */

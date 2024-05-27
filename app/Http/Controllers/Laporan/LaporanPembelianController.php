@@ -44,7 +44,7 @@ class LaporanPembelianController extends Controller
 
         if($request->user != null)
         {
-        	$get->where('po.user_id',$request->rack);
+        	$get->where('po.user_id',$request->user);
         }
 
         if($request->supplier != null)
@@ -76,6 +76,7 @@ class LaporanPembelianController extends Controller
     					,'wrp.qty','whs.name as warehouse_name','racks.name as rack_name'
     					,'poi.purchase_order_id','po.number_letter','us.name as pic');
     	$data = $get->get();
+        $total = $get->sum('po.grandtotal');
     	$data = json_decode(json_encode($data),true);
     	Session::put('laporan_pembelian',$data);
     	$products =  DB::table('products')->get();
@@ -84,7 +85,7 @@ class LaporanPembelianController extends Controller
     	$users = DB::table('users')->where('role','admin')->get();
     	$suppliers  = DB::table('suppliers')->get();
     	return view('dashboard.laporan.pembelian.index',
-    		   compact('data','products','warehouses','racks','users','suppliers','request'));
+    		   compact('data','products','warehouses','racks','users','suppliers','request','total'));
     }
 
     public function export()

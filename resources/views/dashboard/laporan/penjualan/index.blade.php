@@ -68,12 +68,12 @@
       <div class="row mb-2">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="background-color:#1166d8;">
               <form action="{{url('laporan/report_penjualan')}}" id="form-option">
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Nama Produk</label>
+                    <label style="color: white">Cari Berdasarkan Nama Produk</label>
                     <div class="input-group">
                       <input type="text" name="produk" class="form-control" placeholder="Cari data..." value="{{$request->produk}}">
                     </div>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Nama Customer</label>
+                    <label style="color: white">Cari Berdasarkan Nama Customer</label>
                     <div class="input-group">
                       <input type="text" name="customer_name" class="form-control" placeholder="Cari data..." value="{{$request->customer_name}}">
                     </div>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Nomor Hp Customer</label>
+                    <label style="color: white">Cari Berdasarkan Nomor Hp Customer</label>
                     <div class="input-group">
                       <input type="search" name="customer_phone" class="form-control" placeholder="Cari data..." value="{{$request->customer_phone}}">
                     </div>
@@ -100,7 +100,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Kasir / User Yang Menangani</label>
+                    <label style="color: white">Cari Berdasarkan Kasir / User Yang Menangani</label>
                      <select class="form-control" name="user">
                        <option value="" selected disabled>Pilih User / Kasir</option>
                        <option value="">All</option>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Shift</label>
+                    <label style="color: white">Cari Berdasarkan Shift</label>
                     <select class="form-control" name="shift">
                        <option value="" selected disabled>Pilih Shift</option>
                        <option value="">All</option>
@@ -131,7 +131,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Tanggal Start</label>
+                    <label style="color: white">Tanggal Start</label>
                     <div class="input-group">
                       <input type="date" name="start_date" class="form-control" placeholder="Cari data..." value="{{$request->start_date}}">
                     </div>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Tanggal End</label>
+                    <label style="color: white">Tanggal End</label>
                     <div class="input-group">
                       <input type="date" name="end_date" class="form-control" placeholder="Cari data..." value="{{$request->end_date}}">
                     </div>
@@ -147,7 +147,7 @@
                 </div>
               </div>
               <div class="col-md-12" align="right">
-                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Filter</button>
+                <button class="btn btn-success" type="submit" ><i class="fas fa-search"></i> Filter</button>
               </div>
               </form>
             </div>
@@ -156,7 +156,7 @@
       </div>
         <div class="row mb-2 d-flex justify-content-end mr-auto">
         <div class="ml-auto">
-          <a href="{{url('laporan/report_penjualan/export')}}" target="_blank" type="button" class="btn btn-primary">
+          <a href="{{url('laporan/report_penjualan/export')}}" target="_blank" type="button" class="btn btn-success">
             <i class="fas fa-download"></i>
             Export
           </a>
@@ -167,7 +167,18 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Daftar data laporan penjualan</h3>
+              
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                     <h3 class="card-title">Daftar data laporan penjualan</h3>
+                  </div>
+                   <div class="col-md-6" align="right">
+                    Total Pendapatan : <b>Rp {{number_format($total, 0, ",", ".")}}</b>
+                  </div>
+                </div>
+             
+              
+            
             </div>
             <!-- /.card-header -->
             <div class="card-body">

@@ -55,8 +55,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="supplier_id">Supplier</label>
-                                  <select name="supplier_id[]" id="supplier" class="form-control">
-                                      <option selected disabled>Pilih Supplier</option>
+                                  <select name="supplier_id[]" id="supplier" class="form-control" required>
+                                      <option selected disabled value="">Pilih Supplier</option>
                                       @foreach($suppliers as $supplier)
                                       <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                       @endforeach
@@ -81,8 +81,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="product_id">Produk</label>
-                                  <select name="product_id[]" class="form-control">
-                                      <option selected disabled>Pilih Produk</option>
+                                  <select name="product_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Produk</option>
                                       @foreach($product as $produk)
                                       <option value="{{ $produk->id }}">{{ $produk->name }}</option>
                                       @endforeach
@@ -92,8 +92,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="unit_id">Unit</label>
-                                  <select name="unit_id[]" class="form-control">
-                                      <option selected disabled>Pilih Unit</option>
+                                  <select name="unit_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Unit</option>
                                       @foreach($units as $unit)
                                       <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                       @endforeach
@@ -103,14 +103,39 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="unit_id">Harga Satuan</label>
-                                  <input type="number" name="price[]" class="form-control" required>
+                                  <input type="text" name="price[]" class="form-control nominal" onkeypress="return hanyaAngka(event)" required>
                               </div>
                             </div>
                           </div>
                         </div>
                 </div>`;
     $('#products').append(item);
+
+    var newPriceInput = $(`#product-item-${productCount} input[name='price[]']`);
+    newPriceInput.on('input', function (e) {
+        formatCurrency(e.target);
+    });
   }
+
+function hanyaAngka(evt) {
+  var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+    return false;
+  return true;
+}
+
+function formatCurrency(input) {
+  var numeric = input.value.replace(/\D/g, '');
+  var formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  input.value = formatted;
+}
+
+document.querySelectorAll('input.nominal').forEach(function(input) {
+  input.addEventListener('input', function (e) {
+      formatCurrency(e.target);
+  });
+});
 </script>
 @endsection
 
@@ -154,8 +179,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="payment_method">Metode Pembayaran</label>
-                                <select name="payment_method" id="payment_method" class="form-control">
-                                    <option selected disabled>Pilih Metode Pembayaran</option>
+                                <select name="payment_method" id="payment_method" class="form-control" required>
+                                    <option selected disabled value="">Pilih Metode Pembayaran</option>
                                     <option value="cash">Cash</option>
                                     <option value="transfer">Transfer</option>
                                 </select>
@@ -164,7 +189,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="payment_due_date">Jatuh Tempo Pembayaran</label>
-                                <input type="date" class="form-control" name="payment_due_date">
+                                <input type="date" class="form-control" required name="payment_due_date">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -188,8 +213,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="supplier_id">Supplier</label>
-                                  <select name="supplier_id[]" id="supplier" class="form-control">
-                                      <option selected disabled>Pilih Supplier</option>
+                                  <select name="supplier_id[]" id="supplier" class="form-control" required>
+                                      <option selected disabled value="">Pilih Supplier</option>
                                       @foreach($suppliers as $supplier)
                                       <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                       @endforeach
@@ -214,8 +239,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="product_id">Produk</label>
-                                  <select name="product_id[]" class="form-control">
-                                      <option selected disabled>Pilih Produk</option>
+                                  <select name="product_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Produk</option>
                                       @foreach($product as $produk)
                                       <option value="{{ $produk->id }}">{{ $produk->name }}</option>
                                       @endforeach
@@ -225,8 +250,8 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="unit_id">Unit</label>
-                                  <select name="unit_id[]" class="form-control">
-                                      <option selected disabled>Pilih Unit</option>
+                                  <select name="unit_id[]" class="form-control" required>
+                                      <option selected disabled value="">Pilih Unit</option>
                                       @foreach($units as $unit)
                                       <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                       @endforeach
@@ -236,7 +261,7 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label for="unit_id">Harga Satuan</label>
-                                  <input type="number" name="price[]" class="form-control" required>
+                                  <input type="text" name="price[]" class="form-control nominal" onkeypress="return hanyaAngka(event)" required>
                               </div>
                             </div>
                           </div>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2024 at 05:05 AM
--- Server version: 10.6.16-MariaDB-0ubuntu0.22.04.1
--- PHP Version: 8.2.18
+-- Generation Time: May 02, 2024 at 10:37 AM
+-- Server version: 8.0.36-0ubuntu0.22.04.1
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,12 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cashiers` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `number` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -42,10 +43,12 @@ CREATE TABLE `cashiers` (
 -- Dumping data for table `cashiers`
 --
 
-INSERT INTO `cashiers` (`id`, `user_id`, `number`, `name`, `address`, `phone`, `created_at`, `updated_at`) VALUES
-(1, 2, '0012305567', 'Alfian Muhammad', ' Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014234', NULL, NULL),
-(2, 3, '0012305569', 'Deny Sumargo', ' Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014239', NULL, NULL),
-(3, 4, '0012305569', 'Billie Elish', ' Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014238', NULL, NULL);
+INSERT INTO `cashiers` (`id`, `user_id`, `number`, `name`, `email`, `address`, `phone`, `created_at`, `updated_at`) VALUES
+(1, 2, '0012305567', 'Alfian Muhammad', NULL, 'Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014234', NULL, NULL),
+(2, 3, '0012305569', 'Deny Sumargo', NULL, 'Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014239', NULL, NULL),
+(3, 4, '0012305569', 'Billie Elish', NULL, 'Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014238', NULL, NULL),
+(4, 6, '000123', 'aqilspc', NULL, 'Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '085608014111', '2024-04-29 15:16:11', NULL),
+(5, 7, '998765', 'micin', NULL, 'Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141', '09823232434', '2024-04-29 15:16:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -54,8 +57,8 @@ INSERT INTO `cashiers` (`id`, `user_id`, `number`, `name`, `address`, `phone`, `
 --
 
 CREATE TABLE `categories` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -76,9 +79,9 @@ INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `customers` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -95,13 +98,28 @@ INSERT INTO `customers` (`id`, `name`, `phone`, `created_at`, `updated_at`) VALU
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `logs`
+--
+
+CREATE TABLE `logs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `product_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `qty` bigint NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -135,17 +153,44 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `opname` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
-  `rack_id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` int(11) NOT NULL,
-  `type` enum('addition','subtraction') NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `product_id` bigint UNSIGNED NOT NULL,
+  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `rack_id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `qty` int NOT NULL,
+  `type` enum('addition','subtraction') COLLATE utf8mb4_general_ci NOT NULL,
+  `kadaluarsa` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
   `date` date NOT NULL,
+  `info` text COLLATE utf8mb4_general_ci,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(191) NOT NULL,
+  `token` varchar(191) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(191) NOT NULL,
+  `token` varchar(191) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -154,12 +199,12 @@ CREATE TABLE `opname` (
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -173,19 +218,19 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `products` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `code` varchar(255) NOT NULL,
-  `supplier_id` bigint(20) UNSIGNED NOT NULL,
-  `unit_id` bigint(20) UNSIGNED NOT NULL,
-  `category_id` bigint(20) UNSIGNED NOT NULL,
-  `price` bigint(20) UNSIGNED NOT NULL,
-  `active_zat` varchar(255) DEFAULT NULL,
-  `power_shape` varchar(255) DEFAULT NULL,
-  `min_stock` bigint(20) UNSIGNED DEFAULT NULL,
-  `max_stock` bigint(20) UNSIGNED DEFAULT NULL,
-  `stock` bigint(20) UNSIGNED DEFAULT NULL,
-  `recipe` enum('yes','no') NOT NULL DEFAULT 'no',
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `supplier_id` bigint UNSIGNED NOT NULL,
+  `unit_id` bigint UNSIGNED NOT NULL,
+  `category_id` bigint UNSIGNED NOT NULL,
+  `price` bigint UNSIGNED NOT NULL,
+  `active_zat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `power_shape` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `min_stock` bigint UNSIGNED DEFAULT NULL,
+  `max_stock` bigint UNSIGNED DEFAULT NULL,
+  `stock` bigint UNSIGNED DEFAULT NULL,
+  `recipe` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -195,9 +240,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `code`, `supplier_id`, `unit_id`, `category_id`, `price`, `active_zat`, `power_shape`, `min_stock`, `max_stock`, `stock`, `recipe`, `created_at`, `updated_at`) VALUES
-(1, 'Paracetamol', 'PRC', 1, 1, 1, 15000, 'active zat 1', 'berat', 10, 100, 0, 'yes', NULL, NULL),
-(2, 'Amoksilin', 'AMK', 2, 2, 2, 16000, 'active zat 1', 'berat', 10, 50, 0, 'no', NULL, NULL),
-(3, 'Diapet', 'DPT', 3, 3, 3, 10000, 'active zat 1', 'ringan', 10, 50, 0, 'no', NULL, NULL);
+(1, 'Paracetamol', 'PRC', 1, 1, 1, 15000, 'active zat 1', 'berat', 10, 100, 97, 'yes', NULL, NULL),
+(2, 'Amoksilin', 'AMK', 2, 2, 2, 16000, 'active zat 1', 'berat', 10, 50, 96, 'no', NULL, NULL),
+(3, 'Diapet', 'DPT', 3, 3, 3, 10000, 'active zat 1', 'ringan', 10, 50, 97, 'no', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -206,17 +251,17 @@ INSERT INTO `products` (`id`, `name`, `code`, `supplier_id`, `unit_id`, `categor
 --
 
 CREATE TABLE `purchase_orders` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `number_letter` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `number_letter` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date NOT NULL,
-  `payment_method` enum('cash','transfer') NOT NULL,
-  `proof` varchar(255) DEFAULT NULL,
+  `payment_method` enum('cash','transfer') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `proof` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `payment_due_date` date DEFAULT NULL,
-  `grandtotal` bigint(20) UNSIGNED NOT NULL,
-  `information` varchar(255) DEFAULT NULL,
-  `status` enum('plan','order') NOT NULL DEFAULT 'plan',
-  `distribution` tinyint(1) NOT NULL DEFAULT 0,
+  `grandtotal` bigint UNSIGNED NOT NULL,
+  `information` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('plan','order') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'plan',
+  `distribution` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -226,7 +271,7 @@ CREATE TABLE `purchase_orders` (
 --
 
 INSERT INTO `purchase_orders` (`id`, `user_id`, `number_letter`, `date`, `payment_method`, `proof`, `payment_due_date`, `grandtotal`, `information`, `status`, `distribution`, `created_at`, `updated_at`) VALUES
-(3, 1, 'PO-1205932449', '2024-04-25', 'transfer', '664839046_proof_table.png', '2024-05-01', 3450000, 'testing', 'order', 1, '2024-04-24 20:02:25', '2024-04-24 21:02:24');
+(1, 1, 'PO-2068498512', '2024-04-30', 'transfer', '23412153_proof_table.jpg', '2024-04-09', 4400000, 'Bulanan 2024 April', 'order', 1, '2024-04-30 10:07:25', '2024-04-30 10:09:37');
 
 -- --------------------------------------------------------
 
@@ -235,16 +280,16 @@ INSERT INTO `purchase_orders` (`id`, `user_id`, `number_letter`, `date`, `paymen
 --
 
 CREATE TABLE `purchase_order_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `purchase_order_id` bigint(20) UNSIGNED NOT NULL,
-  `supplier_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `unit_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` bigint(20) UNSIGNED NOT NULL,
-  `price` varchar(255) NOT NULL,
-  `subtotal` varchar(255) NOT NULL,
-  `supplier_pic` varchar(255) DEFAULT NULL,
-  `distribution` tinyint(1) NOT NULL DEFAULT 0,
+  `id` bigint UNSIGNED NOT NULL,
+  `purchase_order_id` bigint UNSIGNED NOT NULL,
+  `supplier_id` bigint UNSIGNED NOT NULL,
+  `product_id` bigint UNSIGNED NOT NULL,
+  `unit_id` bigint UNSIGNED NOT NULL,
+  `qty` bigint UNSIGNED NOT NULL,
+  `price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subtotal` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `supplier_pic` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `distribution` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -254,10 +299,9 @@ CREATE TABLE `purchase_order_items` (
 --
 
 INSERT INTO `purchase_order_items` (`id`, `purchase_order_id`, `supplier_id`, `product_id`, `unit_id`, `qty`, `price`, `subtotal`, `supplier_pic`, `distribution`, `created_at`, `updated_at`) VALUES
-(12, 3, 1, 1, 5, 100, '15000', '1500000', 'Pak Hari', 1, '2024-04-24 20:03:45', '2024-04-24 20:03:45'),
-(13, 3, 1, 2, 7, 100, '10000', '1000000', 'Pak Hari', 0, '2024-04-24 20:03:45', '2024-04-24 20:03:45'),
-(14, 3, 2, 3, 11, 100, '5000', '500000', 'Bu Marni', 0, '2024-04-24 20:03:45', '2024-04-24 20:03:45'),
-(15, 3, 3, 2, 4, 50, '9000', '450000', 'Pak Gilang', 0, '2024-04-24 20:03:45', '2024-04-24 20:03:45');
+(1, 1, 1, 1, 5, 100, '17000', '1700000', 'Pak Harir', 1, '2024-04-30 10:07:25', '2024-04-30 10:07:25'),
+(2, 1, 2, 2, 17, 100, '15000', '1500000', 'Pak Haris', 1, '2024-04-30 10:07:25', '2024-04-30 10:07:25'),
+(3, 1, 3, 3, 17, 100, '12000', '1200000', 'Pak Harie', 1, '2024-04-30 10:07:25', '2024-04-30 10:07:25');
 
 -- --------------------------------------------------------
 
@@ -266,8 +310,8 @@ INSERT INTO `purchase_order_items` (`id`, `purchase_order_id`, `supplier_id`, `p
 --
 
 CREATE TABLE `racks` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -277,9 +321,9 @@ CREATE TABLE `racks` (
 --
 
 INSERT INTO `racks` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Obat Botol', NULL, NULL),
-(2, 'Obat Kaplet', NULL, NULL),
-(3, 'Rak Box', '2024-04-24 22:05:47', NULL),
+(1, 'Rak 1', NULL, '2024-04-30 12:35:43'),
+(2, 'Rak 2', NULL, '2024-04-30 12:35:48'),
+(3, 'Rak Box', '2024-04-24 22:05:47', '2024-04-30 12:35:52'),
 (4, 'Rak Dos', '2024-04-24 22:05:55', NULL);
 
 -- --------------------------------------------------------
@@ -289,8 +333,8 @@ INSERT INTO `racks` (`id`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `shifts` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_time` time DEFAULT NULL,
   `end_time` time DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -314,12 +358,12 @@ INSERT INTO `shifts` (`id`, `name`, `start_time`, `end_time`, `created_at`, `upd
 --
 
 CREATE TABLE `suppliers` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `pic` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -340,30 +384,22 @@ INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `pic`, `address`, `crea
 --
 
 CREATE TABLE `transactions` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `shift_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `shift_id` bigint UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `customer_name` varchar(255) DEFAULT NULL,
-  `customer_phone` varchar(255) DEFAULT NULL,
-  `service_cost` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `emblase_cost` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `shipping_cost` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `lainnya` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `discount_type` enum('fix_price','percentage') DEFAULT NULL,
-  `discount` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `grandtotal` bigint(20) UNSIGNED NOT NULL,
+  `customer_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `customer_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `service_cost` bigint UNSIGNED NOT NULL DEFAULT '0',
+  `emblase_cost` bigint UNSIGNED NOT NULL DEFAULT '0',
+  `shipping_cost` bigint UNSIGNED NOT NULL DEFAULT '0',
+  `lainnya` bigint UNSIGNED NOT NULL DEFAULT '0',
+  `discount_type` enum('fix_price','percentage') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `discount` bigint UNSIGNED NOT NULL DEFAULT '0',
+  `grandtotal` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `user_id`, `shift_id`, `date`, `customer_name`, `customer_phone`, `service_cost`, `emblase_cost`, `shipping_cost`, `lainnya`, `discount_type`, `discount`, `grandtotal`, `created_at`, `updated_at`) VALUES
-(2, 1, 0, '2024-04-26', 'Ananda Pratama', '345345', 1000, 0, 0, 0, NULL, 0, 130000, '2024-04-25 19:04:52', NULL),
-(3, 3, 1, '2024-04-26', 'Awang Syukri', '1235678854', 1000, 9000, 0, 0, NULL, 0, 85000, '2024-04-25 22:54:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -372,25 +408,15 @@ INSERT INTO `transactions` (`id`, `user_id`, `shift_id`, `date`, `customer_name`
 --
 
 CREATE TABLE `transaction_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `transaction_id` bigint(20) UNSIGNED NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `product_code` varchar(255) NOT NULL,
-  `product_price` bigint(20) UNSIGNED NOT NULL,
-  `qty` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `transaction_id` bigint UNSIGNED NOT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_price` bigint UNSIGNED NOT NULL,
+  `qty` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `transaction_items`
---
-
-INSERT INTO `transaction_items` (`id`, `transaction_id`, `product_name`, `product_code`, `product_price`, `qty`, `created_at`, `updated_at`) VALUES
-(4, 2, 'Paracetamol', 'PRC', 15000, 1, '2024-04-25 19:04:52', '2024-04-25 19:04:52'),
-(5, 2, 'Amoksilin', 'AMK', 16000, 4, '2024-04-25 19:04:52', '2024-04-25 19:04:52'),
-(6, 2, 'Diapet', 'DPT', 10000, 5, '2024-04-25 19:04:52', '2024-04-25 19:04:52'),
-(7, 3, 'Paracetamol', 'PRC', 15000, 5, '2024-04-25 22:54:49', '2024-04-25 22:54:49');
 
 -- --------------------------------------------------------
 
@@ -399,8 +425,8 @@ INSERT INTO `transaction_items` (`id`, `transaction_id`, `product_name`, `produc
 --
 
 CREATE TABLE `units` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -460,11 +486,13 @@ INSERT INTO `units` (`id`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `role` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` varchar(50) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -473,12 +501,14 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role`, `name`, `username`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Hasnawi Mohas', 'hasnawi_mohas', '$2y$12$e6gagEZOguWCXJw76MqQ8Our2uTXYJGkHq6RVeS0wBcJUSKubQWM.', NULL, NULL),
-(2, 'cashier', 'Alfian Muhammad', '0012305567', '$2y$12$sUAsm7Uvcruz8nqW/GGnEuIvVsOd.0.qn6HC148qxgzgMl0LZ8EzG', NULL, NULL),
-(3, 'cashier', 'Deny Sumargo', '0012305569', '$2y$12$uGAeIvHl2VNr.PpnL5y4j.1B6yWhR/TFylJY9nKST4H7pA6jp.ww.', NULL, NULL),
-(4, 'cashier', 'Billie Elish', '0012305568', '$2y$12$KQjULuEO3Asi4nxmmFw.VeDw5U58gh3EGvaGeC7azXS2zAn49Z/g6', NULL, NULL),
-(5, 'head_office', 'Abraham Samad', 'abraham_samad', '$2y$12$e6gagEZOguWCXJw76MqQ8Our2uTXYJGkHq6RVeS0wBcJUSKubQWM.', NULL, NULL);
+INSERT INTO `users` (`id`, `role`, `foto`, `name`, `username`, `email`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'admin', NULL, 'Hasnawi Mohas', 'hasnawi_mohas', 'viansakaww@gmail.com', '$2y$12$e6gagEZOguWCXJw76MqQ8Our2uTXYJGkHq6RVeS0wBcJUSKubQWM.', NULL, NULL),
+(2, 'cashier', NULL, 'Alfian Muhammad', '0012305567', NULL, '$2y$12$sUAsm7Uvcruz8nqW/GGnEuIvVsOd.0.qn6HC148qxgzgMl0LZ8EzG', NULL, NULL),
+(3, 'cashier', NULL, 'Deny Sumargo', '0012305569', NULL, '$2y$12$uGAeIvHl2VNr.PpnL5y4j.1B6yWhR/TFylJY9nKST4H7pA6jp.ww.', NULL, NULL),
+(4, 'cashier', NULL, 'Billie Elish', '0012305568', NULL, '$2y$12$KQjULuEO3Asi4nxmmFw.VeDw5U58gh3EGvaGeC7azXS2zAn49Z/g6', NULL, NULL),
+(5, 'head_office', NULL, 'Abraham Samad', 'abraham_samad', NULL, '$2y$12$e6gagEZOguWCXJw76MqQ8Our2uTXYJGkHq6RVeS0wBcJUSKubQWM.', NULL, NULL),
+(6, 'cashier', NULL, 'aqilspc', '000123', NULL, '$2y$12$NYRzvI/ICkvyGlTnXLrRiOhIanyRa9.6.4HZzi0acXSojOtVFQsIq', '2024-04-29 15:16:11', NULL),
+(7, 'cashier', NULL, 'micin', '998765', NULL, '$2y$12$BMPymbnAES0r4b31A5duZ.vSlq67Vgg8EncD0pGgRpJxTITzTHk6q', '2024-04-29 15:16:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -487,16 +517,16 @@ INSERT INTO `users` (`id`, `role`, `name`, `username`, `password`, `created_at`,
 --
 
 CREATE TABLE `user_shift_sessions` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `shift_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `shift_id` bigint UNSIGNED NOT NULL,
   `date_start` date NOT NULL,
   `date_end` date DEFAULT NULL,
   `start` time NOT NULL,
   `end` time DEFAULT NULL,
-  `cash_in_hand` bigint(20) UNSIGNED NOT NULL,
-  `end_cash` bigint(20) UNSIGNED NOT NULL,
-  `status` enum('active','deactive') NOT NULL,
+  `cash_in_hand` bigint UNSIGNED NOT NULL,
+  `end_cash` bigint UNSIGNED NOT NULL,
+  `status` enum('active','deactive') COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -506,7 +536,9 @@ CREATE TABLE `user_shift_sessions` (
 --
 
 INSERT INTO `user_shift_sessions` (`id`, `user_id`, `shift_id`, `date_start`, `date_end`, `start`, `end`, `cash_in_hand`, `end_cash`, `status`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, '2024-04-26', '2024-04-26', '04:52:59', '05:59:14', 50000, 85000, 'deactive', '2024-04-25 21:52:59', '2024-04-25 22:59:14');
+(1, 7, 2, '2024-04-30', '2024-04-30', '17:12:49', '17:18:19', 45000, 78000, 'deactive', '2024-04-29 22:12:59', '2024-04-29 22:18:22'),
+(2, 3, 3, '2024-05-01', NULL, '03:47:34', NULL, 50000, 0, 'active', '2024-04-30 20:47:52', NULL),
+(3, 3, 1, '2024-05-02', '2024-05-02', '10:00:43', '10:02:34', 50000, 39000, 'deactive', '2024-05-02 03:01:01', '2024-05-02 03:02:38');
 
 -- --------------------------------------------------------
 
@@ -515,8 +547,8 @@ INSERT INTO `user_shift_sessions` (`id`, `user_id`, `shift_id`, `date_start`, `d
 --
 
 CREATE TABLE `warehouses` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -527,7 +559,8 @@ CREATE TABLE `warehouses` (
 
 INSERT INTO `warehouses` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'Utama', NULL, NULL),
-(2, 'Cadangan', NULL, NULL);
+(2, 'Cadangan', NULL, NULL),
+(3, 'Gudang A', '2024-04-30 12:36:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -536,9 +569,9 @@ INSERT INTO `warehouses` (`id`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `warehouse_racks` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
-  `rack_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `rack_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -555,7 +588,8 @@ INSERT INTO `warehouse_racks` (`id`, `warehouse_id`, `rack_id`, `created_at`, `u
 (5, 1, 4, '2024-04-24 22:06:16', NULL),
 (6, 2, 2, '2024-04-24 22:06:27', NULL),
 (7, 2, 3, '2024-04-24 22:06:32', NULL),
-(8, 2, 4, '2024-04-24 22:06:37', NULL);
+(8, 2, 4, '2024-04-24 22:06:37', NULL),
+(9, 3, 1, '2024-04-30 12:37:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -564,12 +598,13 @@ INSERT INTO `warehouse_racks` (`id`, `warehouse_id`, `rack_id`, `created_at`, `u
 --
 
 CREATE TABLE `warehouse_rack_products` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `purchase_order_item_id` bigint(20) UNSIGNED NOT NULL,
-  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
-  `rack_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `qty` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `purchase_order_item_id` bigint UNSIGNED NOT NULL,
+  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `rack_id` bigint UNSIGNED NOT NULL,
+  `product_id` bigint UNSIGNED NOT NULL,
+  `qty` bigint UNSIGNED NOT NULL,
+  `kadaluarsa` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -578,8 +613,10 @@ CREATE TABLE `warehouse_rack_products` (
 -- Dumping data for table `warehouse_rack_products`
 --
 
-INSERT INTO `warehouse_rack_products` (`id`, `purchase_order_item_id`, `warehouse_id`, `rack_id`, `product_id`, `qty`, `created_at`, `updated_at`) VALUES
-(1, 12, 1, 3, 1, 100, '2024-04-24 22:23:00', NULL);
+INSERT INTO `warehouse_rack_products` (`id`, `purchase_order_item_id`, `warehouse_id`, `rack_id`, `product_id`, `qty`, `kadaluarsa`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, 100, '2024-05-08', '2024-04-30 10:11:58', NULL),
+(2, 2, 1, 3, 2, 100, '2025-10-08', '2024-04-30 10:12:07', NULL),
+(3, 3, 1, 4, 3, 100, '2030-03-08', '2024-04-30 10:12:15', NULL);
 
 --
 -- Indexes for dumped tables
@@ -602,6 +639,12 @@ ALTER TABLE `categories`
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `logs`
+--
+ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -740,121 +783,127 @@ ALTER TABLE `warehouse_rack_products`
 -- AUTO_INCREMENT for table `cashiers`
 --
 ALTER TABLE `cashiers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `opname`
 --
 ALTER TABLE `opname`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `purchase_order_items`
 --
 ALTER TABLE `purchase_order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `racks`
 --
 ALTER TABLE `racks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `shifts`
 --
 ALTER TABLE `shifts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transaction_items`
 --
 ALTER TABLE `transaction_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user_shift_sessions`
 --
 ALTER TABLE `user_shift_sessions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `warehouses`
 --
 ALTER TABLE `warehouses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `warehouse_racks`
 --
 ALTER TABLE `warehouse_racks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `warehouse_rack_products`
 --
 ALTER TABLE `warehouse_rack_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

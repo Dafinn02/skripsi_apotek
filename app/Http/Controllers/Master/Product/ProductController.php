@@ -16,28 +16,30 @@ class ProductController extends Controller
     {
         $get = DB::table('products as pd');
         $get->join('categories as ctg','ctg.id','=','pd.category_id');
+        $get->join('units as unt','unt.id','=','pd.unit_id');
+        $get->join('suppliers as spl','spl.id','=','pd.supplier_id');
+        // return response()->json($get->get());
         if($request->search != null)
         {
-            $get->where('name', 'like', '%' . $request->search . '%');
+            $get->where('pd.name', 'like', '%' . $request->search . '%');
         }
-        if($request->category_id != null)
+        if($request->category != null)
         {
-            $get->where('pd.category_id',$request->category_id);
+            $get->where('pd.category_id',$request->category);
         }
-        $get->select('pd.*','ctg.name as category_name');
+        if($request->unit_id != null)
+        {
+            $get->where('pd.unit_id',$request->unit_id);
+        }
+        $get->select('pd.id', 'pd.code as code', 'pd.name as name', 'pd.recipe as recipe', 'pd.price as price', 
+        'pd.min_stock as min_stock', 'pd.max_stock as max_stock', 'pd.stock as stock',
+        'ctg.name as category_name', 'unt.name as unit_name', 'spl.name as supplier_name');
         $data = $get->get();
+        // return response()->json($data);
         $categories = DB::table('categories')->get();
         $units = DB::table('units')->get();
-       // $option = ['pd.name'=>'Nama','pd.unit'=>'Unit','pd.code'=>'Kode'];
-        $product = DB::table('products as pd')
-                    ->join('categories as ctg','ctg.id','=','pd.category_id')
-                    ->join('units as unt','unt.id','=','pd.unit_id')
-                    ->join('suppliers as spl','spl.id','=','pd.supplier_id')
-                    ->select('pd.*','ctg.name as category_name', 'unt.name as unit_name', 'spl.name as supplier_name')
-                    ->orderBy('pd.id','desc')
-                    ->get();
 
-        return view('dashboard.master.product.index',compact('data','categories','units','request','product'));
+        return view('dashboard.master.product.index',compact('data','categories','units','request'));
     }
 
     public function create()

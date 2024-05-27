@@ -32,13 +32,18 @@
       "ordering": true,
       "info": true,
       "autoWidth": false,
-      "responsive": true,
+      // "responsive": true,
+      "scrollX": true,
     });
   });
   function optionForm(id) {
     document.getElementById(id).submit();
     return false;
   }
+   function printYa(url)
+   {
+    window.open(url, '_blank', 'location=yes,height=570,width=620,scrollbars=yes,status=yes');
+   }
 </script>
 @endsection
 
@@ -77,7 +82,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="example2" class="table table-striped">
                 <thead>
                   <tr>
                     <th>Data</th>
@@ -85,156 +90,92 @@
                   </tr>
                 </thead>
                 @foreach($data as $key => $item)
-                  <tr>  
-                    <td style="line-height: 2">
-                      <table>
-                        <tr>
-                          <th>Kode</th>
-                          <th>:</th>
-                          <td>{{$item['number_letter']}}</td>
-                        </tr>
-                        <tr>
-                          <th>PIC</th>
-                          <th>:</th>
-                          <td>{{$item['user_name']}}</td>
-                        </tr>
-                        <tr>
-                          <th>Metode Pembayaran</th>
-                          <th>:</th>
-                          <td>{{$item['payment_method']}}</td>
-                        </tr>
-                        <tr>
-                          <th>Jatuh Tempo</th>
-                          <th>:</th>
-                          <td>
-                            {{\Carbon\Carbon::make($item['payment_due_date'])->isoFormat('DD MMMM YYYY')}}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Informasi</th>
-                          <th>:</th>
-                          <td>{{$item['information']}}</td>
-                        </tr>
-                        <tr>
-                          <th>Dibuat Pada</th>
-                          <th>:</th>
-                          <td>
-                            {{ \Carbon\Carbon::make($item['created_at'])->format('d F Y H:i:s') }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Dibayar Pada</th>
-                          <th>:</th>
-                          <td>
-                            {{ \Carbon\Carbon::make($item['updated_at'])->format('d F Y H:i:s') }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Grand Total</th>
-                          <th>:</th>
-                          <td>
-                            Rp {{number_format($item['grandtotal'], 0, ",", ".")}}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Bukti Transfer</th>
-                          <th>:</th>
-                          <td>
-                            
-                            <a class="btn btn-sm btn-primary" download target="_blank" href="{{url('dist/img/bukti/'.$item['proof'])}}">
-                              <i class="fas fa-download"></i> &nbsp; Download
-                            </a>
-
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Status Distribusi Gudang</th>
-                          <th>:</th>
-                          <td>
-                            @if($item['distribution'] == 1)
-                              <i style="color: green" class="fas fa-check"></i> Sudah
+                <tr>
+                  <td style="line-height: 1.5">
+                    <table>
+                      <tr>
+                        <th>Kode</th>
+                        <th>PIC</th>
+                        <th>Metode Pembayaran</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Informasi</th>
+                        <th>Dibuat Pada</th>
+                        <th>Dibayar Pada</th>
+                        <th>Grand Total</th>
+                        <th>Bukti Transfer</th>
+                        <th>Status Distribusi Gudang</th>
+                      </tr>
+                      <tr>
+                        <td>{{$item['number_letter']}}</td>
+                        <td>{{$item['user_name']}}</td>
+                        <td>{{$item['payment_method']}}</td>
+                        <td>{{\Carbon\Carbon::make($item['payment_due_date'])->isoFormat('DD MMMM YYYY')}}</td>
+                        <td>{{$item['information']}}</td>
+                        <td>{{ \Carbon\Carbon::make($item['created_at'])->format('d F Y H:i:s') }}</td>
+                        <td>{{ \Carbon\Carbon::make($item['updated_at'])->format('d F Y H:i:s') }}</td>
+                        <td>Rp {{number_format($item['grandtotal'], 0, ",", ".")}}</td>
+                        <td>
+                          @php $url = url('dist/img/bukti/'.$item['proof']) @endphp
+                          <a class="btn btn-sm btn-app bg-primary" style="cursor: pointer;" onclick="printYa('{{$url}}')">
+                            <i class="fas fa-download"></i> &nbsp; Download
+                          </a>
+                        </td>
+                        <td>
+                          @if($item['distribution'] == 1)
+                          <i style="color: green" class="fas fa-check"></i> Sudah
+                          @else
+                          <i style="color: red" class="fas fa-window-close"></i> Belum
+                          @endif
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="line-height: 1.5">
+                    @foreach($item['item'] as $keyItem => $product)
+                    <table>
+                      <tr>
+                        <th>Item Ke</th>
+                        <th>Produk</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Harga Satuan</th>
+                        <th>Supplier</th>
+                        <th>PIC Supplier</th>
+                        <th>Subtotal</th>
+                        <th>Distribusi Gudang</th>
+                      </tr>
+                      <tr>
+                        <td>{{$keyItem + 1}}</td>
+                        <td>{{$product['product_name']}}</td>
+                        <td>{{$product['qty']}}</td>
+                        <td>{{$product['unit_name']}}</td>
+                        <td>Rp {{number_format($product['price'], 0, ",", ".")}}</td>
+                        <td>{{$product['supplier_name']}}</td>
+                        <td>{{$product['supplier_pic']}}</td>
+                        <td>Rp {{number_format($product['price'] * $product['qty'], 0, ",", ".")}}</td>
+                        <td>
+                          @if($product['distribution'] == 1)
+                          <a style="cursor: pointer;color: black;" class="btn btn-app btn-sm bg-info"
+                            data-toggle="modal" data-target="#modal-distribusi-{{$product['id']}}">
+                            <i class="fas fa-search"></i> &nbsp; Detail &nbsp; </a>
                             @else
-                              <i style="color: red" class="fas fa-window-close"></i> Belum
+                            @if(Auth::user()->role != 'head_office')
+                            <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm"
+                              title="Jadikan pesanan" data-toggle="modal"
+                              data-target="#modal-distribusi-{{$product['id']}}">
+                              <i class="fas fa-warehouse"></i> &nbsp; Ke Gudang &nbsp; <i
+                                class="fas fa-arrow-right"></i>
+                            </a>
                             @endif
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td >
-                      <div class="col-sm-12">
-                        <div class="row">
-                          @foreach($item['item'] as $keyItem => $product)
-                          <div class="col-sm-6" style="padding-bottom: 2%">
-                            <table>
-                              <tr>
-                                <th>Item Ke</th>
-                                <th>:</th>
-                                <td>{{$keyItem + 1}}</td>
-                              </tr>
-                               <tr>
-                                <th>Produk</th>
-                                <th>:</th>
-                                <td>{{$product['product_name']}}</td>
-                              </tr>
-                               <tr>
-                                <th>Qty</th>
-                                <th>:</th>
-                                <td>{{$product['qty']}}</td>
-                              </tr>
-                               <tr>
-                                <th>Unit</th>
-                                <th>:</th>
-                                <td>{{$product['unit_name']}}</td>
-                              </tr>
-                               <tr>
-                                <th>Harga Satuan</th>
-                                <th>:</th>
-                                <td>Rp {{number_format($product['price'], 0, ",", ".")}}</td>
-                              </tr>
-                               <tr>
-                                <th>Supplier</th>
-                                <th>:</th>
-                                <td>{{$product['supplier_name']}}</td>
-                              </tr>
-                               <tr>
-                                <th>PIC Supplier</th>
-                                <th>:</th>
-                                <td>{{$product['supplier_pic']}}</td>
-                              </tr>
-                               <tr>
-                                <th>Subtotal</th>
-                                <th>:</th>
-                                <td>Rp {{number_format($product['price'] * $product['qty'], 0, ",", ".")}}</td>
-                              </tr>
-                              <tr>
-                                <th>Distribusi Gudang</th>
-                                <th>:</th>
-                                <td>
-                                  @if($product['distribution'] == 1)
-                                    <a style="cursor: pointer;color: black;" class="btn btn-info btn-sm" title="Jadikan pesanan" 
-                                      data-toggle="modal" data-target="#modal-distribusi-{{$product['id']}}">
-                                    <i class="fas fa-search"></i> &nbsp; Lihat Detail Distribusi
-                                  @else
-                                    @if(Auth::user()->role != 'head_office')
-                                       <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm" title="Jadikan pesanan" 
-                                          data-toggle="modal" data-target="#modal-distribusi-{{$product['id']}}">
-                                        <i class="fas fa-warehouse"></i> &nbsp; Distribusikan Ke Gudang &nbsp; <i class="fas fa-arrow-right"></i>
-                                      </a>
-                                    @endif  
-                                  @endif
-                                  @include('dashboard.pembelian.pesanan.modal-distribusi')
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                          @endforeach
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
+                            @endif
+                            @include('dashboard.pembelian.pesanan.modal-distribusi')
+                        </td>
+                      </tr>
+                    </table>
+                    @endforeach
+                  </td>
+                </tr>
                 @endforeach
-                <tbody>
-                </tbody>
               </table>
             </div>
             <!-- /.card-body -->

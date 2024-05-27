@@ -31,6 +31,7 @@ class CashierController extends Controller
         }
         $userId = DB::table('users')->insertGetId([
             'username'=> $request->number,
+            'email'=> $request->email,
             'password'=> bcrypt($request->number),
             'name'=>$request->name,
             'role'=>'cashier',
@@ -41,6 +42,7 @@ class CashierController extends Controller
             'number' => $request->number,
             'name' => $request->name,
             'address' => $request->address,
+            'email' => $request->email,
             'phone' => $request->phone,
             'created_at' => $createdAt,
         ]);
@@ -51,22 +53,30 @@ class CashierController extends Controller
     public function update(Request $request, $id)
     {
         $updatedAt = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
-        $check = DB::table('users')->where('username',$request->number)->first();
+        $check = DB::table('cashiers')->where('id', $id)->first();
         if($check)
         {
-            if($check->id != $id)
+            if($check->number != $request->number)
             {
-                return redirect()->back()->with('error','number '.$request->number.' sudah digunakan kasir lain, mohon isi kode yang belum digunakan oleh kasir lain');
+                $check2 = DB::table('users')->where('username',$request->number)->first();
+                if($check2)
+                {
+                    return redirect()->back()->with('error','number '.$request->number.' sudah digunakan kasir lain, mohon isi kode yang belum digunakan oleh kasir lain');
+                }
             }
         }
-        DB::table('users')->where('username',$request->number)->update([
+
+        DB::table('users')->where('id',$request->user_id)->update([
             'name'=>$request->name,
+            'username'=>$request->number,
+            'email'=>$request->email,
             'updated_at'=>$updatedAt
-        ]);
+        ]); 
         DB::table('cashiers')->where('id', $id)->update([
             'number' => $request->number,
             'name' => $request->name,
             'address' => $request->address,
+            'email' => $request->email,
             'phone' => $request->phone,
             'updated_at' => $updatedAt,
         ]);

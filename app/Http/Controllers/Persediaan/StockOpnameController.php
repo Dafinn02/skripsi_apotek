@@ -23,10 +23,11 @@ class StockOpnameController extends Controller
     	$get->join('racks as racks','racks.id','=','ope.rack_id');
         $get->join('users as us','us.id','=','ope.user_id');
     	$get->select('pd.name as product_name','pd.code as product_code','ope.id'
-    				,'ope.qty','ope.type','us.name as pic','ope.created_at'
-    				,'whs.name as warehouse_name','racks.name as rack_name');
+    				,'ope.qty','ope.type','us.name as pic','ope.created_at','ope.info'
+    				,'ope.kadaluarsa','whs.name as warehouse_name','racks.name as rack_name');
     	$data = $get->get();
     	$data = json_decode(json_encode($data),true);
+		// return response()->json($data);
     	$products = DB::table('products')->get();
     	$warehouses = DB::table('warehouses')->get();
     	$racks = DB::table('racks')->get();
@@ -35,6 +36,7 @@ class StockOpnameController extends Controller
 
     public function store(Request $request)
     {
+		$kadaluarsa = $request->has('kadaluarsa') ? 1 : 0;
     	$date = Carbon::now('Asia/Jakarta')->format('Y-m-d');
     	$dateTime = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
     	DB::table('opname')->insert([
@@ -45,6 +47,8 @@ class StockOpnameController extends Controller
     		'qty' => $request->qty,
     		'type' => $request->type,
     		'date'=> $date,
+			'kadaluarsa'=> $kadaluarsa,
+            'info'=>$request->info,
     		'created_at' => $dateTime
     	]);
 

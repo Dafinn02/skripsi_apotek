@@ -72,7 +72,7 @@
             Export
           </a> -->
           @if(Auth::user()->role != 'head_office')
-          <a style="cursor: pointer;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
+          <a style="cursor: pointer;" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
@@ -82,12 +82,12 @@
       <div class="row mb-2">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="background-color:#1166d8;">
               <form action="{{url('pembelian/supplier')}}" id="form-option">
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Filter Berdasarkan</label>
+                    <label style="color: white">Filter Berdasarkan</label>
                     <select name="option" class="select2" style="width: 100%; height: 100%" >
                       <option disabled selected>Pilih Filter</option>
                       @foreach($option as $key => $value)
@@ -98,7 +98,7 @@
                 </div>
                 <div class="col-md-8">
                   <div class="form-group">
-                    <label>Masukkan Kata Kunci</label>
+                    <label style="color: white">Masukkan Kata Kunci</label>
                     <div class="input-group">
                       <input type="search" name="search" class="form-control" placeholder="Cari data..." value="{{$request->search}}">
                       <div class="input-group-append">
@@ -146,15 +146,17 @@
                     <td>{{$item->pic}}</td>
                     <td>
                       @if(Auth::user()->role != 'head_office')
-                      <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm" 
-                         data-toggle="modal" data-target="#modal-edit-{{$item->id}}">
-                        <i class="fas fa-edit"></i>
+                      <a class="btn btn-info btn-sm" 
+                        data-toggle="modal" data-target="#modal-edit-{{$item->id}}">
+                        <i class="fas fa-pencil-alt">
+                        </i>
+                          Edit
                       </a>
                       &nbsp;
-                      <a style="color: black;" class="btn btn-danger btn-sm"
-                         href="{{url('/pembelian/supplier/delete/'.$item->id)}}" 
-                         onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
+                      <a class="btn btn-danger btn-sm ondelete"
+                         href="{{url('/pembelian/supplier/delete/'.$item->id)}}"> 
                         <i class="fas fa-trash"></i>
+                        Delete
                       </a>  
                       @endif
                     </td>

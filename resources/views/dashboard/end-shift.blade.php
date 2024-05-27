@@ -21,12 +21,24 @@
 </script>
 <script type="text/javascript">
 function hanyaAngka(evt) {
-      var charCode = (evt.which) ? evt.which : event.keyCode
-       if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-        return false;
-      return true;
-    }
+  var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+    return false;
+  return true;
+}
+
+function formatCurrency(input) {
+  var numeric = input.value.replace(/\D/g, '');
+  var formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  input.value = formatted;
+}
+
+document.querySelectorAll('input.nominal').forEach(function(input) {
+  input.addEventListener('input', function (e) {
+      formatCurrency(e.target);
+  });
+});
 </script>
 @endsection
 
@@ -93,18 +105,18 @@ function hanyaAngka(evt) {
                               </div>
                             </div>
                             <br>
-                              <div class="row">
+                            <div class="row">
                               <div class="col-md-6">
                                 <label>Cash Di Tangan</label>
-                                <input type="text" name="cash_in_hand" class="form-control" onkeypress="return hanyaAngka(event)" placeholder="Contoh : 50000" required readonly value="{{Session::get('shift-session-cash-in')}}">
+                                <input type="text" name="cash_in_hand" class="form-control" onkeypress="return hanyaAngka(event)" placeholder="Contoh : 50000" required readonly value="{{ number_format(Session::get('shift-session-cash-in'), 0, ',', '.') }}">
                               </div>
                               <div class="col-md-6">
                                 <label>Cash Di Akhir</label>
-                                <input type="text" name="end_cash"  class="form-control" onkeypress="return hanyaAngka(event)" placeholder="Contoh : 50000" required value="{{Session::get('shift-session-cash-end')}}">
+                                <input type="text" name="end_cash"  class="form-control nominal" onkeypress="return hanyaAngka(event)" placeholder="Contoh : 50000" required value="{{ number_format(Session::get('shift-session-cash-end'), 0, ',', '.') }}">
                               </div>
                             </div>
                             <div class="row">
-                               <div class="col-md-6">
+                              <div class="col-md-6">
                                 <label>Jam Open</label>
                                 <input type="text" name="open" readonly value="{{Session::get('shift-session-open')}}" class="form-control" >
                               </div>
@@ -116,8 +128,7 @@ function hanyaAngka(evt) {
                             <br> <br>
                             <div class="modal-footer justify-content-between">
                             <a class="btn btn-default" style="cursor: pointer;color: black;" 
-                               href="{{url('dashboard')}}"
-                              >
+                              href="{{url('dashboard')}}">
                               <i class="fas fa-arrow-left"></i>
                               &nbsp;
                                 <b>Batal</b> 
@@ -132,7 +143,6 @@ function hanyaAngka(evt) {
                       <!-- /.modal-content -->
                     </div>
                     <!-- /.modal-dialog -->
-                 
             </div>
             <!-- /.card-body -->
           </div>

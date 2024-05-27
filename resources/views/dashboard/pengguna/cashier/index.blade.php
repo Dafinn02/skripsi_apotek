@@ -68,7 +68,7 @@
       <div class="row mb-2 d-flex justify-content-end mr-auto">
         <div class="ml-auto">
           @if(Auth::user()->role != 'head_office')
-          <a style="cursor: pointer;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
+          <a style="cursor: pointer;" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
@@ -90,6 +90,7 @@
                     <th>Nomor Kasir</th>
                     <th>Nama</th>
                     <th>Alamat</th>
+                    <th>Email</th>
                     <th>No Telepon</th>
                     <th>Action</th>
                   </tr>
@@ -101,18 +102,21 @@
                     <td>{{$item->number}}</td>
                     <td>{{$item->name}}</td>
                     <td>{{$item->address}}</td>
+                    <td>{{$item->email}}</td>
                     <td>{{$item->phone}}</td>
                     <td>
                       @if(Auth::user()->role != 'head_office')
-                      <a style="cursor: pointer;color: black;" class="btn btn-warning btn-sm" 
+                      <a class="btn btn-info btn-sm" 
                          data-toggle="modal" data-target="#modal-edit-{{$item->id}}">
-                        <i class="fas fa-edit"></i>
+                         <i class="fas fa-pencil-alt">
+                        </i>
+                        Edit
                       </a>
                       &nbsp;
-                      <a style="color: black;" class="btn btn-danger btn-sm"
-                         href="{{url('/pengguna/kasir/delete/'.$item->id)}}" 
-                         onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
+                      <a class="btn btn-danger btn-sm ondelete"
+                         href="{{url('/pengguna/kasir/delete/'.$item->id)}}">
                         <i class="fas fa-trash"></i>
+                        Delete
                       </a>  
                       @endif
                     </td>

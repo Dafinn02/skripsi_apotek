@@ -28,6 +28,7 @@ class PesananPembelianController extends Controller
         $get->get();
         $data = $get->get();
     	$data = json_decode(json_encode($data),true);
+        // return response()->json($data);
     	foreach ($data as $key => $value) 
     	{
     		$item = DB::table('purchase_order_items as poi')
@@ -38,8 +39,10 @@ class PesananPembelianController extends Controller
                     ->select('poi.*','pd.name as product_name', 'sp.name as supplier_name', 'un.name as unit_name')
                     ->get();
             $item = json_decode(json_encode($item),true);
+            // return response()->json($item);
             foreach ($item as $iKey => $iValue) 
             {
+                // return response()->json($iValue);
                 $checkDistribution = DB::table('warehouse_rack_products')->where('purchase_order_item_id',$iValue['id'])->first();
                 if($checkDistribution)
                 {
@@ -52,6 +55,7 @@ class PesananPembelianController extends Controller
             }
             $data[$key]['item'] = $item;
     	}
+        // return response()->json($data);
         $gudang = DB::table('warehouses')->get();
         $rak = DB::table('racks')->get();
     	return view('dashboard.pembelian.pesanan.index',compact('data','gudang','rak'));
@@ -67,12 +71,12 @@ class PesananPembelianController extends Controller
                 ->where('poi.purchase_order_id',$id)
                 ->select('poi.*','sp.name as supplier_name','un.name as unit_name','pd.name as product_name')
                 ->get();
+        return response()->json($item);
         return view('pembelian.pesanan.distribution',compact('data','item'));
     }
 
     public function transferToWarehouse(Request $request)
     {
-        //dd($request->all());
         $createdAt = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
 
         DB::table('warehouse_rack_products')->insert([
@@ -81,21 +85,14 @@ class PesananPembelianController extends Controller
             'rack_id'=>$request->rack_id,
             'product_id'=>$request->product_id,
             'qty'=>$request->qty,
+            'kadaluarsa'=>$request->kadaluarsa,
             'created_at'=>$createdAt
         ]);
 
+        DB::table('purchase_orders')->where('id',$request->purchase_order_id)->update(['distribution'=>1]);
         DB::table('purchase_order_items')
             ->where('id',$request->purchase_order_item_id)
-            ->update(['distribution'=>true]);
-        
-        $check = DB::table('purchase_order_items')
-                    ->where('purchase_order_id',$request->purchase_order_id)
-                    ->where('distribution',false)
-                    ->count();
-        if($check > 0)
-        {
-            DB::table('purchase_orders')->where('id',$request->purchase_order_id)->update(['distribution'=>true]);
-        }
+            ->update(['distribution'=>1]);
 
         //update stock
         $qtyExist = DB::table('products')->where('id',$request->product_id)->first();

@@ -33,6 +33,8 @@ class RencanaPembelianController extends Controller
     				->get();
     		$item = json_decode(json_encode($item),true);
     		$data[$key]['item'] = $item;
+
+			// return response()->json($data);
     	}
 
     	return view('dashboard.pembelian.rencana.index',compact('data'));
@@ -52,6 +54,24 @@ class RencanaPembelianController extends Controller
     	{
     		return redirect()->back()->with('error','mohon pilih salah satu produk');
     	}
+
+		foreach ($request->product_id as $key => $value) {
+			$product = DB::table('products')->where('id', $value)->first();
+
+			if ($product) {
+				if ($product->stock != null) {
+					$available_stock = $product->max_stock - $product->stock;
+					if ($request->qty[$key] > $available_stock) {
+						return redirect()->back()->with('error', 'Kuantitas produk ' . $product->name . ' tidak boleh melebihi sisa stok yang tersedia (' . $available_stock . ').');
+					}
+				} elseif ($request->qty[$key] > $product->max_stock) {
+					return redirect()->back()->with('error', 'Kuantitas produk ' . $product->name . ' tidak boleh melebihi batas maksimum stok (' . $product->max_stock . ').');
+				}
+			} else {
+				return redirect()->back()->with('error', 'Produk dengan nama ' . $product->name . ' tidak ditemukan dalam database.');
+			}
+		}
+
     	$createdAt = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
     	$date = Carbon::now('Asia/Jakarta')->format('Y-m-d');
     	$poId = DB::table('purchase_orders')->insertGetId([
@@ -68,15 +88,17 @@ class RencanaPembelianController extends Controller
     	$grandTotal = 0;
     	foreach ($request->product_id as $key => $value) 
     	{
-    		$subtotal = $request->qty[$key] * $request->price[$key];
+			$price = intval(str_replace('.', '', $request->price[$key]));
+			$qty = intval($request->qty[$key]);
+    		$subtotal = $qty * $price;
     		$grandTotal += $subtotal;
     		DB::table('purchase_order_items')->insert([
     			'purchase_order_id'=>$poId,
     			'supplier_id'=> $request->supplier_id[$key],
     			'product_id'=>$value,
     			'unit_id'=>$request->unit_id[$key],
-    			'qty'=> $request->qty[$key],
-    			'price'=> $request->price[$key],
+    			'qty'=> $qty,
+    			'price'=> $price,
     			'subtotal'=> $subtotal,
     			'supplier_pic'=> $request->supplier_pic[$key],
     			'created_at'=> $createdAt,
@@ -96,6 +118,14 @@ class RencanaPembelianController extends Controller
     	$units = DB::table('units')->get();
     	$product = DB::table('products')->get();
 
+		// foreach ($item as $i => $row) {
+		// 	foreach ($row as $key => $value) {
+		// 		if ($key == 'price') {
+		// 			$item[$i]->$key = number_format($value, 0, ",", ".");
+		// 		}
+		// 	}
+		// }
+
     	return view('dashboard.pembelian.rencana.edit',compact('data','item','suppliers','units','product'));
     }
 
@@ -105,20 +135,40 @@ class RencanaPembelianController extends Controller
     	{
     		return redirect()->back()->with('error','mohon pilih salah satu produk');
     	}
+
+		foreach ($request->product_id as $key => $value) {
+			$product = DB::table('products')->where('id', $value)->first();
+
+			if ($product) {
+				if ($product->stock != null) {
+					$available_stock = $product->max_stock - $product->stock;
+					if ($request->qty[$key] > $available_stock) {
+						return redirect()->back()->with('error', 'Kuantitas produk ' . $product->name . ' tidak boleh melebihi sisa stok yang tersedia (' . $available_stock . ').');
+					}
+				} elseif ($request->qty[$key] > $product->max_stock) {
+					return redirect()->back()->with('error', 'Kuantitas produk ' . $product->name . ' tidak boleh melebihi batas maksimum stok (' . $product->max_stock . ').');
+				}
+			} else {
+				return redirect()->back()->with('error', 'Produk dengan nama ' . $product->name . ' tidak ditemukan dalam database.');
+			}
+		}
+
     	$updatedAt = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
     	DB::table('purchase_order_items')->where('purchase_order_id',$id)->delete();
     	$grandTotal = 0;
     	foreach ($request->product_id as $key => $value) 
     	{
-    		$subtotal = $request->qty[$key] * $request->price[$key];
+			$price = intval(str_replace('.', '', $request->price[$key]));
+			$qty = intval($request->qty[$key]);
+    		$subtotal = $qty * $price;
     		$grandTotal += $subtotal;
     		DB::table('purchase_order_items')->insertGetId([
     			'purchase_order_id'=>$id,
     			'supplier_id'=> $request->supplier_id[$key],
     			'product_id'=>$value,
     			'unit_id'=>$request->unit_id[$key],
-    			'qty'=> $request->qty[$key],
-    			'price'=> $request->price[$key],
+    			'qty'=> $qty,
+    			'price'=> $price,
     			'subtotal'=> $subtotal,
     			'supplier_pic'=> $request->supplier_pic[$key],
     			'created_at'=> $updatedAt,

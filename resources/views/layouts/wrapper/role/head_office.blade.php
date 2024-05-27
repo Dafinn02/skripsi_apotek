@@ -11,7 +11,7 @@
    </li>
    <li class="nav-item">
       <a href="#" class="nav-link">
-         <i class="nav-icon fas fa-bookmark"></i>
+         <i class="nav-icon fas fa-cash-register"></i>
          <p>
             Penjualan
             <i class="fas fa-angle-left right"></i>
@@ -33,7 +33,7 @@
                class="nav-link {{Request::segment(2) == 'transaksi' ? 'active' : ''}}">
                <i class="fas fa-exchange-alt"></i>
                <p> &nbsp;
-                  Transaksi
+                  Data Transaksi
                </p>
             </a>
          </li>
@@ -79,7 +79,7 @@
          <li class="nav-item">
             <a href="{{url('/pembelian/pesanan')}}" 
                class="nav-link {{Request::segment(2) == 'pesanan' ? 'active' : ''}}">
-               <i class="fas fa-hand-holding-usd"></i>
+               <i class="fas fa-hand-box-open"></i>
                <p> &nbsp;
                   Pesanan
                </p>
@@ -121,6 +121,15 @@
                <i class="fas fa-hand-holding-usd"></i>
                <p> &nbsp;
                   Stock Opname
+               </p>
+            </a>
+         </li>
+         <li class="nav-item">
+            <a href="{{url('persediaan/stock_kadaluarsa')}}" 
+               class="nav-link {{Request::segment(2) == 'stock_kadaluarsa' ? 'active' : ''}}">
+               <i class="fas fa-exclamation-triangle"></i>
+               <p> &nbsp;
+                  Kadaluarsa
                </p>
             </a>
          </li>
@@ -192,7 +201,7 @@
    </li>
    <li class="nav-item">
       <a href="#" class="nav-link">
-         <i class="nav-icon fas fa-user"></i>
+         <i class="nav-icon fas fa-user-plus"></i>
          <p>
             Pengguna
             <i class="fas fa-angle-left right"></i>

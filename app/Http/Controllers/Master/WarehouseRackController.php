@@ -51,7 +51,7 @@ class WarehouseRackController extends Controller
 
     public function delete($id)
     {
-        DB::table('racks')->where('id',$id)->delete();
+        DB::table('warehouse_racks')->where('id',$id)->delete();
         return redirect()->back()->with('success','Berhasil menghapus data');
     }
 }

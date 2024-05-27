@@ -46,6 +46,20 @@
         return false;
       return true;
     }
+
+  $(document).ready(function(){
+    $('#kadaluarsa').hide();
+
+    $('#type-opname').change(function(){
+      if($(this).val() == 'subtraction'){
+        $('#kadaluarsa').show();
+        $('input[name="kadaluarsa"]').prop('checked', false);
+      } else {
+        $('#kadaluarsa').hide();
+        $('#kadaluarsa-label').hide();
+      }
+    });
+  });
 </script>
 @endsection
 
@@ -76,7 +90,7 @@
       <div class="row mb-2 d-flex justify-content-end mr-auto">
         <div class="ml-auto">
           @if(Auth::user()->role != 'head_office')
-          <a style="cursor: pointer;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
+          <a style="cursor: pointer;" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
@@ -102,6 +116,7 @@
                     <th>Tanggal</th>
                     <th>Gudang</th>
                     <th>Rak</th>
+                    <th>Info</th>
                     <th>#</th>
                   </tr>
                 </thead>
@@ -116,18 +131,22 @@
                     <td>
                       @if($item['type'] == 'addition')
                         <span class="btn btn-sm btn-info">Penambahan</span>
-                      @else
+                      @elseif($item['type'] == 'subtraction' && $item['kadaluarsa'] == 0)
                         <span class="btn btn-sm btn-danger">Pengurangan</span>
+                      @else
+                        <span class="btn btn-sm btn-warning">Kadaluarsa</span>
                       @endif
                     </td>
                     <td>{{ \Carbon\Carbon::make($item['created_at'])->format('d F Y H:i:s')}}</td>
                     <td>{{$item['warehouse_name']}}</td>
                     <td>{{$item['rack_name']}}</td>
                     <td>
+                      {{$item['info']}}
+                    </td>
+                    <td>
                       @if(Auth::user()->role != 'head_office')
-                      <a style="color: black;" class="btn btn-danger btn-sm"
-                         href="{{url('/persediaan/stock_opname/delete/'.$item['id'])}}" 
-                         onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
+                      <a style="color: rgb(255, 0, 0);" class="btn btn-white btn-sm ondelete"
+                         href="{{url('/persediaan/stock_opname/delete/'.$item['id'])}}">
                         <i class="fas fa-trash"></i>
                       </a>  
                       @endif

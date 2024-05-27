@@ -68,12 +68,12 @@
       <div class="row mb-2">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
-              <form action="{{url('product')}}" id="form-option">
+            <div class="card-body" style="background-color:#1166d8;">
+              <form action="{{url('master/produk')}}" id="form-option">
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Cari Berdasarkan Nama Obat</label>
+                    <label style="color: white">Cari Berdasarkan Nama Obat</label>
                     <div class="input-group">
                       <input type="search" name="search" class="form-control" placeholder="Cari data..." value="{{$request->search}}">
                     </div>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Unit</label>
+                    <label style="color: white">Unit</label>
                     <select name="unit_id" id="filter-4" class="select2" style="width: 100%; height: 100%" >
                       <option value="">Semua Unit</option>
                       @foreach($units as $unitKey => $unitValue)
@@ -92,18 +92,18 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>Kategori</label>
-                    <select name="category_id" id="filter-2" class="select2" style="width: 100%; height: 100%" >
+                    <label style="color: white">Kategori</label>
+                    <select name="category" id="filter-2" class="select2" style="width: 100%; height: 100%" >
                       <option value="">Semua Category</option>
                       @foreach($categories as $ctgKey => $ctgValue)
-                        <option {{$request->category_id == $ctgValue->id ? 'selected':''}} value="{{$ctgValue->id}}">{{$ctgValue->name}}</option>
+                        <option {{$request->category == $ctgValue->id ? 'selected':''}} value="{{$ctgValue->id}}">{{$ctgValue->name}}</option>
                       @endforeach
                     </select>
                   </div>
                 </div>
               </div>
               <div class="col-md-12" align="right">
-                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Filter</button>
+                <button class="btn btn-success" type="submit"><i class="fas fa-search"></i> Filter</button>
               </div>
               </form>
             </div>
@@ -121,7 +121,7 @@
             Export
           </a> -->
           @if(Auth::user()->role != 'head_office')
-          <a type="button" class="btn btn-primary" href="{{url('/master/produk/create')}}">
+          <a type="button" class="btn btn-success" href="{{url('/master/produk/create')}}">
             <i class="fas fa-plus"></i>
             Tambah Data
           </a>
@@ -149,13 +149,13 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                @foreach($product as $key => $item)
+                @foreach($data as $key => $item)
                   <tr>
                     <td>{{$key+1}}</td>
                     <td>
-                      <b>Kategori :</b> {{$item->category_name}}<br>
-                      <b>Kode : </b>{{$item->code}}<br>
                       <b>Nama :</b> {{$item->name}}<br>
+                      <b>Kode : </b>{{$item->code}}<br>
+                      <b>Kategori :</b> {{$item->category_name}}<br>
                       <b>Memerlukan Resep ?</b> : {{$item->recipe == 'yes' ? 'Iya' :'Tidak'}}
                     </td>
                     <td>{{$item->supplier_name}}</td>
@@ -168,15 +168,16 @@
                     </td>
                     <td>
                       @if(Auth::user()->role != 'head_office')
-                      <a class="btn btn-warning btn-sm" 
+                      <a class="btn btn-info btn-sm"
                          href="{{url('/master/produk/edit/'.$item->id)}}">
-                        <i class="fas fa-edit"></i>
+                         <i class="fas fa-pencil-alt"></i>
+                        Edit
                       </a>
                       &nbsp;
-                      <a style="color: black;" class="btn btn-danger btn-sm"
-                         href="{{url('/master/produk/delete/'.$item->id)}}" 
-                         onclick="return confirm('Yakin untuk menghapus data? penghapusan data akan ber-efek ke data relasional !')">
+                      <a class="btn btn-danger btn-sm ondelete"
+                         href="{{url('/master/produk/delete/'.$item->id)}}" >
                         <i class="fas fa-trash"></i>
+                        Delete
                       </a>  
                       @endif
                     </td>

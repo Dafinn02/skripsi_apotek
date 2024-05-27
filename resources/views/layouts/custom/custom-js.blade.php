@@ -30,6 +30,7 @@
 <script src="{{url('dist/js/adminlte.js')}}"></script>
 <script src="{{url('dist/js/pages/dashboard.js')}}"></script> 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
       @if($message=Session::get('success'))
          toastr.success("{{ $message }}");
@@ -37,4 +38,23 @@
       @if($message=Session::get('error'))
          toastr.error("{{$message}}");
       @endif
-     </script>
+</script>
+<script>
+    $('.ondelete').click(function(e) {
+        e.preventDefault();
+        const deleteUrl = $(this).attr('href');
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            text: "Data Anda Tidak Dapat di Kembalikan",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#adb5bd',
+            confirmButtonText: 'Hapus',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+        });
+    });
+</script>

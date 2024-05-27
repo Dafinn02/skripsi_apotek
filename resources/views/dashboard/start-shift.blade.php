@@ -21,12 +21,24 @@
 </script>
 <script type="text/javascript">
 function hanyaAngka(evt) {
-      var charCode = (evt.which) ? evt.which : event.keyCode
-       if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
-        return false;
-      return true;
-    }
+  var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+    return false;
+  return true;
+}
+
+function formatCurrency(input) {
+  var numeric = input.value.replace(/\D/g, '');
+  var formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  input.value = formatted;
+}
+
+document.querySelectorAll('input.nominal').forEach(function(input) {
+  input.addEventListener('input', function (e) {
+      formatCurrency(e.target);
+  });
+});
 </script>
 @endsection
 
@@ -96,7 +108,7 @@ function hanyaAngka(evt) {
                               </div>
                               <div class="col-md-4">
                                 <label>Cash Di Tangan</label>
-                                <input type="text" name="cash_in_hand" class="form-control" onkeypress="return hanyaAngka(event)" placeholder="Contoh : 50000" required>
+                                <input type="text" name="cash_in_hand" class="form-control nominal" onkeypress="return hanyaAngka(event)" placeholder="Contoh : 50000" required>
                               </div>
                                <div class="col-md-4">
                                 <label>Jam Open</label>

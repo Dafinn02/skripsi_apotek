@@ -10,7 +10,6 @@
                 </button>
               </div>
               <div class="modal-body">
-               <!--  <input type="hidden" name="user_id" value="{{$item->user_id}}"> -->
                 <div class="form-group">
                     <label class="form-label">Nomor Kasir</label>
                     <div class="input-group mb-3">
@@ -28,6 +27,12 @@
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Masukkan Alamat" required name="address">                      
                     </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="Masukkan Email" required name="email">                      
+                  </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">No. Telepon</label>

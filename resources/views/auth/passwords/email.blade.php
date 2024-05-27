@@ -1,47 +1,68 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+  <title>Apotek BUMD Sumekar</title>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+  <!-- bootstrap minified css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
+  <!-- custom stylesheet -->
+  <link rel="stylesheet" href="{{url('login_assets/style.css')}}">
+</head>
+<body>
+<div class="container d-flex align-items-center min-vh-100">
+  <div class="row justify-content-center">
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+    <!-- start image column -->
+    <div class="col-md-6">
+      <img src="{{url('login_assets/img/12.jpg')}}" alt="image" class="img-fluid">
+    </div><!-- end of image column -->
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <!-- start form column -->
+    <div class="col-md-6">
+        <div class="card mt-4">
+          <div class="card-body">
+            <div class="align-items-center text-center justify-content-center">
+              <p><img  class="form_header" src="{{url('login_assets/img/logo-sumekar-2.png')}}" alt="Apotek Sumekar"></p>
             </div>
+            <div class="align-items-center text-center justify-content-center">
+              @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+              @endif
+                <form action="/lupa-password" method="post">
+                  @csrf
+                  <p class="login-box-msg">Lupa Password? Masukkan Email Anda.</p>
+                    <div class="input-group input-group-lg mb-4 mx-auto">
+                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    <input type="text" class="form-control form-control-lg" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="d-grid my-4">
+                  <button type="submit" class="btn btn-lg btn-primary">Kirim</button>
+                </div>
+              </form>
+              <div class="mb-3 text-center">
+                <a href="/login" style="text-decoration: none;">
+                  <i class="fas fa-arrow-left-long"></i> Kembali Ke Halaman Login
+                </a>
+              </div>                       
+            </div>
+          </div>
         </div>
-    </div>
-</div>
-@endsection
+      </div><!-- end of form column -->
+
+  </div><!-- end of row -->
+</div><!-- end of container -->
+
+<!-- script files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<!-- end of script files -->
+</body>
+</html>
+

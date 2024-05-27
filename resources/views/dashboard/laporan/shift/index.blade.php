@@ -162,7 +162,13 @@
                     <td>{{$item['user_name']}}</td>
                     <td>{{$item['shift_name']}} ( {{$item['start_time']}} - {{$item['end_time']}} ) </td>
                     <td>{{ \Carbon\Carbon::make($item['date_start'])->format('d F Y')}} {{$item['start']}}</td>
-                    <td>{{ \Carbon\Carbon::make($item['date_end'])->format('d F Y')}} {{$item['end']}}</td>
+                    <td>
+                      @if($item['date_end'] == null)
+                        -
+                      @else
+                        {{ \Carbon\Carbon::make($item['date_end'])->format('d F Y')}} {{$item['end']}}
+                      @endif
+                    </td>
                     <td>Rp {{number_format($item['cash_in_hand'], 0, ",", ".")}}</td>
                     <td>Rp {{number_format($item['end_cash'], 0, ",", ".")}}</td>
                   </tr>

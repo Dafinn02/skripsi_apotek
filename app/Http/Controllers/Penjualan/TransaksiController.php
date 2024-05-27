@@ -62,6 +62,6 @@ class TransaksiController extends Controller
             
         }
 
-        return view('dashboard.penjualan.transaksi.index', compact('data','now','shift_id'));
+        return view('dashboard.penjualan.transaksi.index', compact('data','now','shift_id','request'));
     }
 }
